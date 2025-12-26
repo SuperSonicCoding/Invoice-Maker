@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="./styles.css" rel="stylesheet">
+    <title>Invoice Maker</title>
+  </head>
+  <body>
+    <main class="d-flex flex-row">
+      <div id="sidebar" class="w-75">
+        <ol id="company-list"> <!-- ordered list -->
+          <li class="company m-2 ps-2">
+            Swamp Rabbit
+          </li>
+          <li id="create-company" class="company m-2 ps-2">
+            Create company profile +
+          </li>
+        </ol>
+      </div>
+
+      <div id="edit-info" class="w-100 p-2">
+      </div> 
+
+      <div id="file-preview" class="w-100">
+        File here.
+      </div>
+    </main>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+
+    <template id="company-template">
+      <div class="company">
+
+      </div>
+    </template>
+
+    <template id="create-company-template">
+      <form id="create-company-form">
+        <div class="text-center">Name:</div>
+        <input id="company-name" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">Invoice Number:</div>
+        <input id="invoice-number" type="text" class="w-100" maxlength="8">
+
+        <div class="text-center">Address:</div>
+        <input id="company-address" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">City:</div>
+        <input id="company-city" type="text" class="w-100" maxlength="25">
+
+        <div class="text-center">Zip Code:</div>
+        <input id="company-city" type="number" class="w-100" maxlength="6">
+
+        <button type="submit">Submit</button>
+      </form>
+    </template>
+  </body>
+</html>

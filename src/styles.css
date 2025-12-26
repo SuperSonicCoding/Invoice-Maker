@@ -1,0 +1,32 @@
+/* styles.css */
+
+#sidebar {
+    border: 1px solid black;
+}
+
+#edit-info {
+    border: 1px solid black;
+}
+
+#file-preview{
+    border: 1px solid black;
+}
+
+.company {
+    border-radius: 5px;
+    box-shadow: 0 0 5px black;
+}
+
+ol {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+input {
+    border-radius: 5px;
+}
+
+button {
+    border-radius: 5px;
+}

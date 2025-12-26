@@ -1,0 +1,17 @@
+{
+  "name": "hurt-judge-fear-wrz01",
+  "productName": "hurt-judge-fear-wrz01",
+  "description": "My Electron application description",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "102ba",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "bootstrap": "^5.3.8",
+    "electron": "^39.2.7",
+    "reloader": "^1.0.2"
+  }
+}

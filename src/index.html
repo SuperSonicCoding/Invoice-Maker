@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="./styles.css" rel="stylesheet">
+    <title>Invoice Maker</title>
+  </head>
+  <body>
+    <header class="w-100 position-relative">
+      <h1 class="fs-3 text-center">Invoice Maker</h1>
+      <button class="position-absolute bottom-0 end-0 me-2">Edit Profile</button>
+    </header>
+
+    <main class="d-flex flex-row">
+      <div id="sidebar" class="w-75">
+        <ol id="company-list"> <!-- ordered list -->
+          <li id="create-company" class="company m-2 ps-2">
+            Create company profile +
+          </li>
+        </ol>
+      </div>
+
+      <div id="edit-info" class="w-100 p-2">
+      </div> 
+
+      <div id="file-preview" class="w-100">
+        File here.
+      </div>
+    </main>
+
+    <!-- You can also require other files to run in this process -->
+    <script src="./renderer.js"></script>
+
+    <template id="company-template">
+      <li class="company m-2 ps-2">
+      </li>
+    </template>
+
+    <template id="create-company-template">
+      <form id="create-company-form">
+        <div class="text-center">Name:</div>
+        <input id="company-name" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">Invoice Number:</div>
+        <input id="invoice-number" type="text" class="w-100" maxlength="8">
+
+        <div class="text-center">Address:</div>
+        <input id="company-address" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">City:</div>
+        <input id="company-city" type="text" class="w-100" maxlength="25">
+
+        <div class="text-center">Zip Code:</div>
+        <input id="company-city" type="number" class="w-100" maxlength="6">
+
+        <button type="submit">Submit</button>
+      </form>
+    </template>
+
+    <template id="edit-company-template">
+      <form id="create-company-form">
+        <div class="text-center">Name:</div>
+        <input id="company-name" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">Invoice Number:</div>
+        <input id="invoice-number" type="text" class="w-100" maxlength="8">
+
+        <div class="text-center">Address:</div>
+        <input id="company-address" type="text" class="w-100" maxlength="100">
+
+        <div class="text-center">City:</div>
+        <input id="company-city" type="text" class="w-100" maxlength="25">
+
+        <div class="text-center">Zip Code:</div>
+        <input id="company-city" type="number" class="w-100" maxlength="6">
+
+        <div class="text-center">Quantity:</div>
+        <input id="company-city" type="number" class="w-100" maxlength="4">
+
+        <div class="text-center">Unit Price:</div>
+        <input id="company-city" type="number" class="w-100" maxlength="8">
+
+        <div class="text-center">Description:</div>
+        <input id="company-city" type="text" class="w-100" maxlength="150">
+
+        <button type="submit">Submit</button>
+      </form>
+    </template>
+  </body>
+</html>

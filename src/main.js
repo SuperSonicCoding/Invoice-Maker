@@ -54,8 +54,8 @@ app.on('window-all-closed', function () {
 ipcMain.handle('get-current-company', async (event) => {
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM companies WHERE id=1', (err, user) => {
-      console.log('err', err);
       if (err) {
+        console.log('err', err);
         reject(err.message);
       }
       
@@ -69,6 +69,7 @@ ipcMain.handle('get-current-company', async (event) => {
   });
 })
 
+// handles creating a new company
 ipcMain.handle('create-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
     const {name, number, address, city, zipCode } = data;
@@ -81,5 +82,43 @@ ipcMain.handle('create-company', async (event, data) => {
         insert.finalize(); // use when completely done with statement
       }
     });
+  });
+});
+
+// handles creating the initial company profile
+ipcMain.handle('create-initial-company', async (event, data) => {
+  return new Promise((resolve, reject)  => {
+    const {name, address, city, zipCode, phoneNumber } = data;
+    const insert = db.prepare('INSERT INTO companies (name, address, city, zip_code, phone_number) VALUES (?,?,?,?,?)');
+    insert.run(name, address, city, zipCode, phoneNumber, function(err) {
+      if (err) {
+        reject(err.message);
+      } else {
+        resolve({ id: this.lastId, message: 'Data posted successfully' });
+        insert.finalize(); // use when completely done with statement
+      }
+    });
+  });
+});
+
+// handles getting all of the companies
+ipcMain.handle('get-companies', async (event) => {
+  // console.log('here');
+  return new Promise((resolve, reject) => {
+    console.log('here1');
+    db.get('SELECT * FROM companies WHERE id>1 ORDER BY name ASC'), (err, companies) => {
+      console.log('here2');
+      if (err) {
+        console.log('err', err);
+        reject(err.message);
+      }
+
+      if (companies) {
+        resolve(companies);
+        console.log('companies', companies);
+      } else {
+        reject('No companies found.');
+      }
+    }
   });
 });

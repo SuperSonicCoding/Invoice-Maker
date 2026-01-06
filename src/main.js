@@ -75,9 +75,9 @@ ipcMain.handle('get-current-company', async (event) => {
 // handles creating a new company
 ipcMain.handle('create-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
-    const {name, number, address, city, zipCode } = data;
-    const insert = db.prepare('INSERT INTO companies (name, invoice_number, address, city, zip_code) VALUES (?,?,?,?,?)');
-    insert.run(name, number, address, city, zipCode, function(err) {
+    const {name, number, address, city, stateInitials, zipCode } = data;
+    const insert = db.prepare('INSERT INTO companies (name, invoice_number, address, city, state_initials, zip_code) VALUES (?,?,?,?,?,?)');
+    insert.run(name, number, address, city, stateInitials, zipCode, function(err) {
       if (err) {
         reject(err.message);
       } else {
@@ -91,9 +91,9 @@ ipcMain.handle('create-company', async (event, data) => {
 // handles creating the initial company profile
 ipcMain.handle('create-initial-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
-    const {name, address, city, zipCode, phoneNumber, email } = data;
-    const insert = db.prepare('INSERT INTO companies (name, address, city, zip_code, phone_number, email) VALUES (?,?,?,?,?,?)');
-    insert.run(name, address, city, zipCode, phoneNumber, email, function(err) {
+    const {name, address, city, stateInitials, zipCode, phoneNumber, email } = data;
+    const insert = db.prepare('INSERT INTO companies (name, address, city, state_initials, zip_code, phone_number, email) VALUES (?,?,?,?,?,?,?)');
+    insert.run(name, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
       if (err) {
         reject(err.message);
       } else {
@@ -126,9 +126,9 @@ ipcMain.handle('get-companies', async (event) => {
 // handles updating data for a company
 ipcMain.handle('update-company', async (event, data) => {
   return new Promise((resolve, reject) => {
-    const {name, invoiceNumber, address, city, zipCode, quantity, unitPrice, description, id } = data;
-    const update = db.prepare('UPDATE companies SET name=?,invoice_number=?,address=?,city=?,zip_code=?,quantity=?,unit_price=?, description=? WHERE id=?');
-    update.run(name, invoiceNumber, address, city, zipCode, quantity, unitPrice, description, id, function(err) {
+    const {name, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id } = data;
+    const update = db.prepare('UPDATE companies SET name=?,invoice_number=?,address=?,city=?,state_initials=?,zip_code=?,quantity=?,unit_price=?, description=? WHERE id=?');
+    update.run(name, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id, function(err) {
       if (err) {
         console.log('err', err);
         reject(err.message);
@@ -143,9 +143,9 @@ ipcMain.handle('update-company', async (event, data) => {
 // handles updating data for current company
 ipcMain.handle('update-current-company', async (event, data) => {
   return new Promise((resolve, reject) => {
-    const {name, address, city, zipCode, phoneNumber, email } = data;
-    const update = db.prepare('UPDATE companies SET name=?,address=?,city=?,zip_code=?,phone_number=?,email=? WHERE id=1');
-    update.run(name, address, city, zipCode, phoneNumber, email, function(err) {
+    const {name, address, city, stateInitials, zipCode, phoneNumber, email } = data;
+    const update = db.prepare('UPDATE companies SET name=?,address=?,city=?,state_initials=?,zip_code=?,phone_number=?,email=? WHERE id=1');
+    update.run(name, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
       if (err) {
         console.log('err', err);
         reject(err.message);
@@ -158,3 +158,85 @@ ipcMain.handle('update-current-company', async (event, data) => {
 });
 
 // handles creating a document
+ipcMain.handle('create-file', async (event, data) => {
+  return new Promise((resolve, reject) => {
+    const {currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, 
+      companyProfileName, invoiceNumber, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description} = data;
+
+    const headerTable = new docx.Table({
+      width: {
+        size: 4535,
+        type: docx.WidthType,
+      },
+
+      rows: [
+        new docx.TableRow({
+          children:[
+            new docx.TableCell({
+              children: [
+                new docx.Paragraph({
+                  children: [
+                    new docx.TextRun({
+                    text: currentCompanyName,
+                    bold: true,
+                    size: 16,
+                    font: "Arial (Headings)",
+                  }),
+                
+                  new docx.TextRun({
+                    text: currentCompanyAddress,
+                    size: 12,
+                    font: "Arial (Body)",
+                  }),
+
+                  new docx.TextRun({
+                    text: currentCompanyCity + " " + currentCompanyZipCode,
+                    size: 12,
+                    font: "Arial (Body)",
+                  }),
+
+                  new docx.TextRun({
+                    text: phoneNumber,
+                    size: 12,
+                    font: "Arial (Body)",
+                  })
+                  ]
+                })
+                ]
+            })
+          ]
+        }),
+
+        new docx.TableRow({
+          children:[
+            new docx.TableCell({
+              children: [
+                new docx.Paragraph({
+                  children: [
+                    new docx.TextRun({
+                    text: currentCompanyName,
+                    bold: true,
+                    size: 16,
+                    font: "Arial (Headings)"
+                    })
+                  ]
+                })
+              ]
+            })
+          ]
+        })
+      ]
+    });
+
+    const doc = new docx.Document({ 
+      sections: [{
+        children: [headerTable]
+      }]
+    })
+
+    // saves the file
+    docx.Packer.toBuffer(doc).then(buffer => {
+      fs.writeFileSync("InvoiceDemo.docx", buffer);
+    });
+  });
+});

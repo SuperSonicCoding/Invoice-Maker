@@ -79,12 +79,47 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                         const response = window.api.updateCompany({name, invoiceNumber, address, city, zipCode, quantity, unitPrice, description, id})
                         console.log('update res:', response);
                     });
+
+                    // handles creating the file
+                    const createFileButtonTemplate = document.getElementById('create-file-button-template');
+                    const createFileButton = createFileButtonTemplate.cloneNode(true);
+                    const filePreview = document.getElementById('file-preview');
+                    filePreview.innerText = "";
+                    filePreview.appendChild(createFileButton);
+
+                    const createFile = document.getElementById('create-file-button');
+                    createFile.addEventListener('click', e => {
+                        const currentCompanyName = user.name;
+                        const currentCompanyAddress = user.address;
+                        const currentCompanyCity = user.city;
+                        const currentCompanyZipCode = user.zip_code;
+                        const phoneNumber = user.phone_number;
+
+                        const companyProfileName = document.getElementById('company-name').value;
+                        const invoiceNumber = document.getElementById('invoice-number').value;
+                        const companyProfileAddress = document.getElementById('company-address').value;
+                        const companyProfileCity = document.getElementById('company-city').value;
+                        const companyProfileZipCode = document.getElementById('company-zip-code').value;
+                        const quantity = document.getElementById('company-quantity').value;
+                        const unitPrice = document.getElementById('company-unit-price').value;
+                        const description = document.getElementById('company-description').value;
+                        const response = window.api.createFile({currentCompanyName, currentCompanyAddress, currentCompanyCity, 
+                            currentCompanyZipCode, phoneNumber, companyProfileName, invoiceNumber, companyProfileAddress, companyProfileCity, companyProfileZipCode, quantity, unitPrice, description});
+                        console.log('file creation res', response);
+                    });
+
                 });
             })
         }).catch(err => {
             console.log('err', err);
         })
 
+        // Handles if the user wants to edit their profile
+        const editProfileButton = document.getElementById('edit-profile');
+        console.log('edit', editProfileButton);
+        editProfileButton.addEventListener('click', event => {
+            window.location.href = 'edit-profile.html';
+        });
     }).catch(err => {
         // window.api.createCompany({name, number, address, city, zipCode});
         window.location.href = 'edit-profile.html';
@@ -93,17 +128,42 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
     // will be run once on the edit-profile page
     const submitButton = document.getElementById('create-initial-company-submit');
     console.log('sb', submitButton);
-    submitButton.addEventListener('click', e => {
-        e.preventDefault();
-        const name = document.getElementById('company-name').value;
-        const address = document.getElementById('company-address').value;
-        const city = document.getElementById('company-city').value;
-        const zipCode = document.getElementById('company-zip-code').value;
-        const phoneNumber = document.getElementById('company-phone-number').value;
-        const response = window.api.createInitialCompany({name, address, city, zipCode, phoneNumber});
-        console.log('res:', response);
-        window.location.href = 'index.html';
-    })
+    window.api.getCurrentCompany().then(user => {
+        document.getElementById('title').innerText = "Update Company Profile Data";
+        // populates fields
+        document.getElementById('company-name').value = user.name;
+        document.getElementById('company-address').value = user.address;
+        document.getElementById('company-city').value = user.city;
+        document.getElementById('company-zip-code').value = user.zip_code;
+        document.getElementById('company-phone-number').value = user.phone_number;
+        document.getElementById('company-email').value = user.email;
+
+        submitButton.addEventListener('click', e => {
+            e.preventDefault();
+            const name = document.getElementById('company-name').value;
+            const address = document.getElementById('company-address').value;
+            const city = document.getElementById('company-city').value;
+            const zipCode = document.getElementById('company-zip-code').value;
+            const phoneNumber = document.getElementById('company-phone-number').value;
+            const email = document.getElementById('company-email').value;
+            const response = window.api.updateCurrentCompany({name, address, city, zipCode, phoneNumber, email});
+            console.log('res:', response);
+            window.location.href = 'index.html';
+        })
+    }).catch(err => {
+        document.getElementById('title').innerText = "Create Company Profile Data";
+        submitButton.addEventListener('click', e => {
+            e.preventDefault();
+            const name = document.getElementById('company-name').value;
+            const address = document.getElementById('company-address').value;
+            const city = document.getElementById('company-city').value;
+            const zipCode = document.getElementById('company-zip-code').value;
+            const phoneNumber = document.getElementById('company-phone-number').value;
+            const response = window.api.createInitialCompany({name, address, city, zipCode, phoneNumber});
+            console.log('res:', response);
+            window.location.href = 'index.html';
+        })
+    });
 }
 // window.location.href = 'edit-profile.html';
 

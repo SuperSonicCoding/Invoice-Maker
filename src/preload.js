@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld('api',
     createCompany: (data) => ipcRenderer.invoke('create-company', data),
     createInitialCompany: (data) => ipcRenderer.invoke('create-initial-company', data),
     updateCompany: (data) => ipcRenderer.invoke('update-company', data),
+    updateCurrentCompany: (data) => ipcRenderer.invoke('update-current-company', data),
+    createFile: (data) => ipcRenderer.invoke('create-file', data),
   }
 )
 

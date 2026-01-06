@@ -14,5 +14,8 @@
     "electron": "^39.2.7",
     "reloader": "^1.0.2",
     "sqlite3": "^5.1.7"
+  },
+  "dependencies": {
+    "docx": "^9.5.1"
   }
 }

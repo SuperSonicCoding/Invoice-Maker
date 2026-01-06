@@ -2,6 +2,9 @@ try {
   require('electron-reloader')(module);
 } catch {} // reloads electron app when it detects change
 
+const fs = require("fs");
+const docx = require("docx");
+
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('node:path')
@@ -88,9 +91,9 @@ ipcMain.handle('create-company', async (event, data) => {
 // handles creating the initial company profile
 ipcMain.handle('create-initial-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
-    const {name, address, city, zipCode, phoneNumber } = data;
-    const insert = db.prepare('INSERT INTO companies (name, address, city, zip_code, phone_number) VALUES (?,?,?,?,?)');
-    insert.run(name, address, city, zipCode, phoneNumber, function(err) {
+    const {name, address, city, zipCode, phoneNumber, email } = data;
+    const insert = db.prepare('INSERT INTO companies (name, address, city, zip_code, phone_number, email) VALUES (?,?,?,?,?,?)');
+    insert.run(name, address, city, zipCode, phoneNumber, email, function(err) {
       if (err) {
         reject(err.message);
       } else {
@@ -104,7 +107,7 @@ ipcMain.handle('create-initial-company', async (event, data) => {
 // handles getting all of the companies
 ipcMain.handle('get-companies', async (event) => {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM companies WHERE id>1 ORDER BY name ASC', (err, companies) => {
+    db.all('SELECT * FROM companies WHERE id>1 ORDER BY name DESC', (err, companies) => {
       if (err) {
         console.log('err', err);
         reject(err.message);
@@ -123,7 +126,6 @@ ipcMain.handle('get-companies', async (event) => {
 // handles updating data for a company
 ipcMain.handle('update-company', async (event, data) => {
   return new Promise((resolve, reject) => {
-    console.log('update');
     const {name, invoiceNumber, address, city, zipCode, quantity, unitPrice, description, id } = data;
     const update = db.prepare('UPDATE companies SET name=?,invoice_number=?,address=?,city=?,zip_code=?,quantity=?,unit_price=?, description=? WHERE id=?');
     update.run(name, invoiceNumber, address, city, zipCode, quantity, unitPrice, description, id, function(err) {
@@ -137,3 +139,22 @@ ipcMain.handle('update-company', async (event, data) => {
     });
   });
 });
+
+// handles updating data for current company
+ipcMain.handle('update-current-company', async (event, data) => {
+  return new Promise((resolve, reject) => {
+    const {name, address, city, zipCode, phoneNumber, email } = data;
+    const update = db.prepare('UPDATE companies SET name=?,address=?,city=?,zip_code=?,phone_number=?,email=? WHERE id=1');
+    update.run(name, address, city, zipCode, phoneNumber, email, function(err) {
+      if (err) {
+        console.log('err', err);
+        reject(err.message);
+      } else {
+        resolve({ id: this.lastId, message: 'Data updated successfully' });
+        update.finalize();
+      }
+    });
+  });
+});
+
+// handles creating a document

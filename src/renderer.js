@@ -102,12 +102,14 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                     const createFile = document.getElementById('create-file-button');
                     console.log('file preview', createFile);
                     createFile.addEventListener('click', e => {
+                        const fullName = user.full_name;
                         const currentCompanyName = user.name;
                         const currentCompanyAddress = user.address;
                         const currentCompanyCity = user.city;
                         const currentCompanyStateInitials = user.state_initials;
                         const currentCompanyZipCode = user.zip_code;
                         const phoneNumber = user.phone_number;
+                        const email = user.email;
 
                         const companyProfileName = document.getElementById('company-name').value;
                         const invoiceNumber = document.getElementById('invoice-number').value;
@@ -119,8 +121,8 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                         const quantity = document.getElementById('company-quantity').value;
                         const unitPrice = document.getElementById('company-unit-price').value;
                         const description = document.getElementById('company-description').value;
-                        const response = window.api.createFile({currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                            currentCompanyZipCode, phoneNumber, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description});
+                        const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
+                            currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description});
                         console.log('file creation res', response);
                     });
 
@@ -157,14 +159,15 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 
         submitButton.addEventListener('click', e => {
             e.preventDefault();
-            const name = document.getElementById('company-name').value;
+            const fullName = document.getElementById('full-name').value;
+            const companyName = document.getElementById('company-name').value;
             const address = document.getElementById('company-address').value;
             const city = document.getElementById('company-city').value;
             const stateInitials = document.getElementById('state-initials').value
             const zipCode = document.getElementById('company-zip-code').value;
             const phoneNumber = document.getElementById('company-phone-number').value;
             const email = document.getElementById('company-email').value;
-            const response = window.api.updateCurrentCompany({name, address, city, stateInitials, zipCode, phoneNumber, email});
+            const response = window.api.updateCurrentCompany({fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email});
             console.log('res:', response);
             window.location.href = 'index.html';
         })
@@ -172,13 +175,14 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
         document.getElementById('title').innerText = "Create Company Profile Data";
         submitButton.addEventListener('click', e => {
             e.preventDefault();
-            const name = document.getElementById('company-name').value;
+            const fullName = document.getElementById('full-name').value;
+            const companyName = document.getElementById('company-name').value;
             const address = document.getElementById('company-address').value;
             const city = document.getElementById('company-city').value;
             const stateInitials = document.getElementById('state-initials').value
             const zipCode = document.getElementById('company-zip-code').value;
             const phoneNumber = document.getElementById('company-phone-number').value;
-            const response = window.api.createInitialCompany({name, address, city, zipCode, stateInitials, phoneNumber});
+            const response = window.api.createInitialCompany({fullName, companyName, address, city, zipCode, stateInitials, phoneNumber});
             console.log('res:', response);
             window.location.href = 'index.html';
         })

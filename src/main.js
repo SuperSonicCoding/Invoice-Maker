@@ -91,9 +91,9 @@ ipcMain.handle('create-company', async (event, data) => {
 // handles creating the initial company profile
 ipcMain.handle('create-initial-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
-    const {name, address, city, stateInitials, zipCode, phoneNumber, email } = data;
-    const insert = db.prepare('INSERT INTO companies (name, address, city, state_initials, zip_code, phone_number, email) VALUES (?,?,?,?,?,?,?)');
-    insert.run(name, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
+    const {fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email } = data;
+    const insert = db.prepare('INSERT INTO companies (full_name, name, address, city, state_initials, zip_code, phone_number, email) VALUES (?,?,?,?,?,?,?)');
+    insert.run(fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
       if (err) {
         reject(err.message);
       } else {
@@ -143,9 +143,9 @@ ipcMain.handle('update-company', async (event, data) => {
 // handles updating data for current company
 ipcMain.handle('update-current-company', async (event, data) => {
   return new Promise((resolve, reject) => {
-    const {name, address, city, stateInitials, zipCode, phoneNumber, email } = data;
-    const update = db.prepare('UPDATE companies SET name=?,address=?,city=?,state_initials=?,zip_code=?,phone_number=?,email=? WHERE id=1');
-    update.run(name, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
+    const {fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email } = data;
+    const update = db.prepare('UPDATE companies SET full_name=?,name=?,address=?,city=?,state_initials=?,zip_code=?,phone_number=?,email=? WHERE id=1');
+    update.run(fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email, function(err) {
       if (err) {
         console.log('err', err);
         reject(err.message);
@@ -161,7 +161,7 @@ ipcMain.handle('update-current-company', async (event, data) => {
 ipcMain.handle('create-file', async (event, data) => {
   return new Promise((resolve, reject) => {
     try {
-      const {currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, 
+      const {fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, email, 
         companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description} = data;
 
       // use when wanting to go to the next line or need extra space
@@ -1922,7 +1922,7 @@ ipcMain.handle('create-file', async (event, data) => {
                     color: "aaaaaa",
                   },
                 },
-                
+
                 verticalAlign: docx.VerticalAlign.CENTER,
 
                 margins: {
@@ -1967,9 +1967,46 @@ ipcMain.handle('create-file', async (event, data) => {
             }),
             inventoryTable,
             new docx.Paragraph({
-              children: []
+              children: [
+                breakText,
+                new docx.TextRun({
+                  text: `Make all checks payable to ${currentCompanyName}`,
+                  size: 24,
+                  font: "Arial (Body)",
+                }),
+                breakText,
+                breakText,
+                breakText,
+                new docx.TextRun({
+                  text: "If you have any questions concerning this invoice, contact",
+                  size: 24,
+                  font: "Arial (Body)",
+                }),
+                breakText,
+                new docx.TextRun({
+                  text: `${fullName} ${phoneNumber}`,
+                  size: 24,
+                  font: "Arial (Body)",
+                }),
+                breakText,
+                new docx.TextRun({
+                  text: "Email: ",
+                  size: 24,
+                  font: "Arial (Body)",
+                }),
+                new docx.ExternalHyperlink({
+                  children:[
+                    new docx.TextRun({
+                      text: `${email}`,
+                      size: 24,
+                      font: "Arial (Body)",
+                      style: "Hyperlink",
+                    }),
+                  ],
+                  link: `mailto:${email}`,
+                }),
+              ]
             }),
-            
           ]
         }]
       })

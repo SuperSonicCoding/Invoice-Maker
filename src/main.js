@@ -363,15 +363,92 @@ ipcMain.handle('create-file', async (event, data) => {
         ]
       });
 
-      const inventoryTable = docx.Table({
+      const inventoryTable = new docx.Table({
+        borders: {
+          top: {
+            style: docx.BorderStyle.NONE,
+          },
+          bottom: {
+            style: docx.BorderStyle.NONE,
+          },
+          right: {
+            style: docx.BorderStyle.NONE,
+          },
+          left: {
+            style: docx.BorderStyle.NONE,
+          },
+          insideHorizontal: {
+            style: docx.BorderStyle.NONE,
+          },
+          insideVertical: {
+            style: docx.BorderStyle.NONE,
+          }
+        },
+
+        width: {
+          size: 10000,
+          type: docx.WidthType.DXA,
+        },
+
         rows: [
           new docx.TableRow({
+            
+
             children: [
               new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+
                 width: {
-                  size: 750,
+                  size: 1000,
                   type: docx.WidthType.PERCENTAGE,
                 },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
 
                 margins: {
                   top: 100,
@@ -387,8 +464,8 @@ ipcMain.handle('create-file', async (event, data) => {
                     children: [
                       new docx.TextRun({
                         text: "QUANTITY",
-                        style: bold,
-                        size: 18,
+                        bold: true,
+                        size: 24,
                         font: "Arial (Headings)",
                       })
                     ]
@@ -397,10 +474,35 @@ ipcMain.handle('create-file', async (event, data) => {
               }),
 
               new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
                 width: {
-                  size: 3250,
+                  size: 2500,
                   type: docx.WidthType.PERCENTAGE,
                 },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
 
                 margins: {
                   top: 100,
@@ -416,8 +518,8 @@ ipcMain.handle('create-file', async (event, data) => {
                     children: [
                       new docx.TextRun({
                         text: "DESCRIPTION",
-                        style: bold,
-                        size: 18,
+                        bold: true,
+                        size: 24,
                         font: "Arial (Headings)",
                       })
                     ]
@@ -426,10 +528,35 @@ ipcMain.handle('create-file', async (event, data) => {
               }),
 
               new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
                 width: {
-                  size: 500,
+                  size: 750,
                   type: docx.WidthType.PERCENTAGE,
                 },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
 
                 margins: {
                   top: 100,
@@ -445,8 +572,8 @@ ipcMain.handle('create-file', async (event, data) => {
                     children: [
                       new docx.TextRun({
                         text: "UNIT PRICE",
-                        style: bold,
-                        size: 18,
+                        bold: true,
+                        size: 24,
                         font: "Arial (Headings)",
                       })
                     ]
@@ -455,10 +582,35 @@ ipcMain.handle('create-file', async (event, data) => {
               }),
 
               new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
                 width: {
-                  size: 500,
+                  size: 750,
                   type: docx.WidthType.PERCENTAGE,
                 },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
 
                 margins: {
                   top: 100,
@@ -474,8 +626,8 @@ ipcMain.handle('create-file', async (event, data) => {
                     children: [
                       new docx.TextRun({
                         text: "TOTAL",
-                        style: bold,
-                        size: 18,
+                        bold: true,
+                        size: 24,
                         font: "Arial (Headings)",
                       })
                     ]
@@ -483,7 +635,1316 @@ ipcMain.handle('create-file', async (event, data) => {
                 ]
               }),
             ]
-          })
+          }),
+
+          new docx.TableRow({
+            children: [
+              // table cell for quantity
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.CENTER,
+
+                    children: [
+                      new docx.TextRun({
+                        text: quantity,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              // table cell for description
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 150,
+                  right: 150,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.LEFT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: description,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              // table cell for unit price
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 150,
+                  right: 150,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: `$${unitPrice}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              // table cell for total
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 150,
+                  right: 150,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: `$${(unitPrice * quantity).toFixed(2)}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            height: {
+              value: 350,
+              rule: docx.HeightRule.EXACT
+            },
+
+            children: [
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+              new docx.TableCell({
+
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                children: []
+              }),
+            ]
+          }),
+
+          new docx.TableRow({
+            children: [
+              new docx.TableCell({
+                children:[]
+              }),
+
+              new docx.TableCell({
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 150,
+                  bottom: 150,
+                  right: 150,
+                },
+
+                columnSpan: 2,
+
+                children:[
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "SUBTOTAL",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  right: 200,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: `$${(unitPrice * quantity).toFixed(2)}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ],
+              })
+            ]
+          }),
+
+          new docx.TableRow({
+            children: [
+              new docx.TableCell({
+                children:[]
+              }),
+
+              new docx.TableCell({
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 150,
+                  bottom: 150,
+                  right: 150,
+                },
+
+                columnSpan: 2,
+
+                children:[
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "SALES TAX",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  right: 200,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "N/A",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ],
+              })
+            ]
+          }),
+
+          new docx.TableRow({
+            children: [
+              new docx.TableCell({
+                children:[]
+              }),
+
+              new docx.TableCell({
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 150,
+                  bottom: 150,
+                  right: 150,
+                },
+
+                columnSpan: 2,
+
+                children:[
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "SHIPPING AND HANDLING",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  right: 200,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "N/A",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ],
+              })
+            ]
+          }),
+
+          new docx.TableRow({
+            children: [
+              new docx.TableCell({
+
+                children:[]
+              }),
+
+              new docx.TableCell({
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  top: 150,
+                  bottom: 150,
+                  right: 150,
+                },
+
+                columnSpan: 2,
+
+                children:[
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "TOTAL DUE",
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                borders: {
+                  top: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  bottom: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  right: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                  left: {
+                    style: docx.BorderStyle.SINGLE,
+                    size: 1,
+                    color: "aaaaaa",
+                  },
+                },
+                
+                verticalAlign: docx.VerticalAlign.CENTER,
+
+                margins: {
+                  right: 200,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: `$${(unitPrice * quantity).toFixed(2)}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      })
+                    ]
+                  })
+                ],
+              })
+            ]
+          }),
         ]
       });
 
@@ -499,7 +1960,17 @@ ipcMain.handle('create-file', async (event, data) => {
               }
             }
           },
-          children: [headerTable]
+          children: [
+            headerTable, 
+            new docx.Paragraph({
+              children: []
+            }),
+            inventoryTable,
+            new docx.Paragraph({
+              children: []
+            }),
+            
+          ]
         }]
       })
 

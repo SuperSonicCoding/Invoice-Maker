@@ -160,83 +160,360 @@ ipcMain.handle('update-current-company', async (event, data) => {
 // handles creating a document
 ipcMain.handle('create-file', async (event, data) => {
   return new Promise((resolve, reject) => {
-    const {currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, 
-      companyProfileName, invoiceNumber, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description} = data;
+    try {
+      const {currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, 
+        companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description} = data;
 
-    const headerTable = new docx.Table({
-      width: {
-        size: 4535,
-        type: docx.WidthType,
-      },
+      // use when wanting to go to the next line or need extra space
+      const breakText = new docx.TextRun({
+        break: 1,
+      });
 
-      rows: [
-        new docx.TableRow({
-          children:[
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [
-                    new docx.TextRun({
-                    text: currentCompanyName,
-                    bold: true,
-                    size: 16,
-                    font: "Arial (Headings)",
-                  }),
+      // top table used for current company and company profile info
+      const headerTable = new docx.Table({
+        // no borders
+        borders: {
+          top: {
+            style: docx.BorderStyle.NONE,
+          },
+          bottom: {
+            style: docx.BorderStyle.NONE,
+          },
+          right: {
+            style: docx.BorderStyle.NONE,
+          },
+          left: {
+            style: docx.BorderStyle.NONE,
+          },
+          insideHorizontal: {
+            style: docx.BorderStyle.NONE,
+          },
+          insideVertical: {
+            style: docx.BorderStyle.NONE,
+          }
+        },
+
+        rows: [
+          new docx.TableRow({
+            children:[
+              new docx.TableCell({
+                width: {
+                  size: 6000,
+                  type: docx.WidthType.DXA,
+                },
+
+                // adds space between the text and border
+                margins: {
+                  top: 75,
+                  bottom: 75,
+                  left: 75,
+                  right: 75,
+                },
                 
-                  new docx.TextRun({
-                    text: currentCompanyAddress,
-                    size: 12,
-                    font: "Arial (Body)",
-                  }),
+                children: [
+                  new docx.Paragraph({
 
-                  new docx.TextRun({
-                    text: currentCompanyCity + " " + currentCompanyZipCode,
-                    size: 12,
-                    font: "Arial (Body)",
-                  }),
+                    children: [
+                      new docx.TextRun({
+                      text: currentCompanyName,
+                      bold: true,
+                      size: 32,
+                      font: "Arial (Headings)",
+                    }),
 
-                  new docx.TextRun({
-                    text: phoneNumber,
-                    size: 12,
-                    font: "Arial (Body)",
+                    breakText,
+                  
+                    new docx.TextRun({
+                      text: currentCompanyAddress,
+                      size: 24,
+                      font: "Arial (Body)",
+                    }),
+
+                    breakText,
+
+                    new docx.TextRun({
+                      text: `${currentCompanyCity}, ${currentCompanyStateInitials} ${currentCompanyZipCode}`,
+                      size: 24,
+                      font: "Arial (Body)",
+                    }),
+
+                    breakText,
+
+                    new docx.TextRun({
+                      text: phoneNumber,
+                      size: 24,
+                      font: "Arial (Body)",
+                    }),
+
+                    breakText,
+                    ]
                   })
                   ]
-                })
+              }),
+
+              new docx.TableCell({
+                width: {
+                  size: 6000,
+                  type: docx.WidthType.DXA,
+                },
+
+                // adds space between the text and border
+                margins: {
+                  top: 75,
+                  bottom: 75,
+                  left: 75,
+                  right: 75,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.RIGHT,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "INVOICE",
+                        bold: true,
+                        size: 40,
+                        font: "Arial (Headings)",
+                        color: "595959",
+
+                      }),
+
+                      breakText,
+                      breakText,
+                      breakText,
+
+                      new docx.TextRun({
+                        text: "INVOICE # " + invoiceNumber,
+                        size: 24,
+                        font: "Arial (Body)",
+                      }),
+
+                      breakText,
+
+                      new docx.TextRun({
+                        text: `DATE: ${date.slice(5,7)}/${date.slice(8)}/${date.slice(0,4)}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      }),
+
+                      breakText,
+                    ]
+                  })
                 ]
-            })
-          ]
-        }),
+              })
+            ]
+          }),
 
-        new docx.TableRow({
-          children:[
-            new docx.TableCell({
-              children: [
-                new docx.Paragraph({
-                  children: [
-                    new docx.TextRun({
-                    text: currentCompanyName,
-                    bold: true,
-                    size: 16,
-                    font: "Arial (Headings)"
-                    })
-                  ]
-                })
-              ]
-            })
-          ]
-        })
-      ]
-    });
+          new docx.TableRow({
+            children:[
+              new docx.TableCell({
 
-    const doc = new docx.Document({ 
-      sections: [{
-        children: [headerTable]
-      }]
-    })
+                // adds space between the text and border
+                margins: {
+                  top: 75,
+                  bottom: 75,
+                  left: 75,
+                  right: 75,
+                },
 
-    // saves the file
-    docx.Packer.toBuffer(doc).then(buffer => {
-      fs.writeFileSync("InvoiceDemo.docx", buffer);
-    });
+                children: [
+                  new docx.Paragraph({
+                    children: [
+                      new docx.TextRun({
+                        text: "TO:",
+                        bold: true,
+                        size: 24,
+                        font: "Arial (Body)"
+                      }),
+
+                      breakText,
+
+                      new docx.TextRun({
+                        text: companyProfileName,
+                        size: 24,
+                        font: "Arial (Body)"
+                      }),
+
+                      breakText,
+
+                      new docx.TextRun({
+                        text: companyProfileAddress,
+                        size: 24,
+                        font: "Arial (Body)",
+                      }),
+
+                      breakText,
+
+                      new docx.TextRun({
+                        text: `${companyProfileCity}, ${companyProfileStateInitials} ${companyProfileZipCode}`,
+                        size: 24,
+                        font: "Arial (Body)",
+                      }),
+
+                      breakText,
+                      breakText,
+                      breakText,
+                    ]
+                  })
+                ]
+              }),
+            ]
+          })
+        ]
+      });
+
+      const inventoryTable = docx.Table({
+        rows: [
+          new docx.TableRow({
+            children: [
+              new docx.TableCell({
+                width: {
+                  size: 750,
+                  type: docx.WidthType.PERCENTAGE,
+                },
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 100,
+                  right: 100,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.CENTER,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "QUANTITY",
+                        style: bold,
+                        size: 18,
+                        font: "Arial (Headings)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                width: {
+                  size: 3250,
+                  type: docx.WidthType.PERCENTAGE,
+                },
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 100,
+                  right: 100,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.CENTER,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "DESCRIPTION",
+                        style: bold,
+                        size: 18,
+                        font: "Arial (Headings)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                width: {
+                  size: 500,
+                  type: docx.WidthType.PERCENTAGE,
+                },
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 100,
+                  right: 100,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.CENTER,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "UNIT PRICE",
+                        style: bold,
+                        size: 18,
+                        font: "Arial (Headings)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+
+              new docx.TableCell({
+                width: {
+                  size: 500,
+                  type: docx.WidthType.PERCENTAGE,
+                },
+
+                margins: {
+                  top: 100,
+                  bottom: 100,
+                  left: 100,
+                  right: 100,
+                },
+
+                children: [
+                  new docx.Paragraph({
+                    alignment: docx.AlignmentType.CENTER,
+
+                    children: [
+                      new docx.TextRun({
+                        text: "TOTAL",
+                        style: bold,
+                        size: 18,
+                        font: "Arial (Headings)",
+                      })
+                    ]
+                  })
+                ]
+              }),
+            ]
+          })
+        ]
+      });
+
+      const doc = new docx.Document({ 
+        sections: [{
+          properties: {
+            page: {
+              margin: {
+                top: ".75in",
+                right: ".75in",
+                bottom: ".7in",
+                left: ".75in",
+              }
+            }
+          },
+          children: [headerTable]
+        }]
+      })
+
+      // saves the file
+      docx.Packer.toBuffer(doc).then(buffer => {
+        fs.writeFileSync("InvoiceDemo.docx", buffer);
+      }).catch(err => {
+        console.error('error creating docx', err);
+      });
+
+      resolve('file successfully made');
+    } catch (err) {
+      console.log('err', err);
+      reject(err.message);
+    }
   });
 });

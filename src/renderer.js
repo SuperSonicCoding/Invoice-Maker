@@ -55,6 +55,15 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                     const companyForm = companyFormTemplate.content.cloneNode(true);
                     companyForm.getElementById('company-name').value = company.name;
                     companyForm.getElementById('invoice-number').value = company.invoice_number;
+
+                    // getting current date from stack overflow
+                    // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+                    let today = new Date();
+                    const offset = today.getTimezoneOffset();
+                    today = new Date(today.getTime() - (offset * 60 * 1000));
+                    companyForm.getElementById('date').value = today.toISOString().split('T')[0];
+                    // end of stack overflow usage
+
                     companyForm.getElementById('company-address').value = company.address;
                     companyForm.getElementById('company-city').value = company.city;
                     companyForm.getElementById('state-initials').value = company.state_initials;
@@ -102,6 +111,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 
                         const companyProfileName = document.getElementById('company-name').value;
                         const invoiceNumber = document.getElementById('invoice-number').value;
+                        const date = document.getElementById('date').value;
                         const companyProfileAddress = document.getElementById('company-address').value;
                         const companyProfileCity = document.getElementById('company-city').value;
                         const companyProfileStateInitials = document.getElementById('state-initials').value;
@@ -110,7 +120,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                         const unitPrice = document.getElementById('company-unit-price').value;
                         const description = document.getElementById('company-description').value;
                         const response = window.api.createFile({currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                            currentCompanyZipCode, phoneNumber, companyProfileName, invoiceNumber, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description});
+                            currentCompanyZipCode, phoneNumber, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description});
                         console.log('file creation res', response);
                     });
 

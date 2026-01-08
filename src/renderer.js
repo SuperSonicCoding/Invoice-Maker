@@ -111,18 +111,31 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                         const phoneNumber = user.phone_number;
                         const email = user.email;
 
-                        const companyProfileName = document.getElementById('company-name').value;
-                        const invoiceNumber = document.getElementById('invoice-number').value;
+                        // const companyProfileName = document.getElementById('company-name').value;
+                        // const invoiceNumber = document.getElementById('invoice-number').value;
+                        // const date = document.getElementById('date').value;
+                        // const companyProfileAddress = document.getElementById('company-address').value;
+                        // const companyProfileCity = document.getElementById('company-city').value;
+                        // const companyProfileStateInitials = document.getElementById('state-initials').value;
+                        // const companyProfileZipCode = document.getElementById('company-zip-code').value;
+                        // const quantity = document.getElementById('company-quantity').value;
+                        // const unitPrice = document.getElementById('company-unit-price').value;
+                        // const description = document.getElementById('company-description').value;
+
+                        const companyProfileName = company.name;
+                        const invoiceNumber = company.invoice_number;
                         const date = document.getElementById('date').value;
-                        const companyProfileAddress = document.getElementById('company-address').value;
-                        const companyProfileCity = document.getElementById('company-city').value;
-                        const companyProfileStateInitials = document.getElementById('state-initials').value;
-                        const companyProfileZipCode = document.getElementById('company-zip-code').value;
-                        const quantity = document.getElementById('company-quantity').value;
-                        const unitPrice = document.getElementById('company-unit-price').value;
-                        const description = document.getElementById('company-description').value;
+                        const companyProfileAddress = company.address;
+                        const companyProfileCity = company.city;
+                        const companyProfileStateInitials = company.state_initials;
+                        const companyProfileZipCode = company.zip_code
+                        const quantity = company.quantity;
+                        const unitPrice = company.unit_price;
+                        const description = company.description;
+                        const filePath = company.file_path;
+                        const id = company.id;
                         const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                            currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description});
+                            currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id});
                         console.log('file creation res', response);
                     });
 

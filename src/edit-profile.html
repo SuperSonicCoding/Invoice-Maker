@@ -15,16 +15,16 @@
       <div id="edit-info" class="w-100 p-2">
         <form id="create-company-form">
           <div class="text-center">Full Name:</div>
-            <input id="full-name" type="text" class="w-100" maxlength="100">
+            <input id="full-name" type="text" class="w-100" maxlength="100" required>
 
             <div class="text-center">Company Name:</div>
-            <input id="company-name" type="text" class="w-100" maxlength="100">
+            <input id="company-name" type="text" class="w-100" maxlength="100" required>
 
             <div class="text-center">Address:</div>
-            <input id="company-address" type="text" class="w-100" maxlength="100">
+            <input id="company-address" type="text" class="w-100" maxlength="100" required>
 
             <div class="text-center">City:</div>
-            <input id="company-city" type="text" class="w-100" maxlength="25">
+            <input id="company-city" type="text" class="w-100" maxlength="25" required>
 
             <label for="state-initials">State:</label>
             <select id="state-initials" name="state-initials" required>
@@ -88,13 +88,13 @@
             </select>
 
             <div class="text-center">Zip Code:</div>
-            <input id="company-zip-code" type="number" class="w-100" maxlength="6">
+            <input id="company-zip-code" type="number" class="w-100" maxlength="10" required>
 
             <div class="text-center">Phone Number:</div>
-            <input id="company-phone-number" type="text" class="w-100" maxlength="15">
+            <input id="company-phone-number" type="text" class="w-100" maxlength="14" required>
 
             <div class="text-center">Email:</div>
-            <input id="company-email" type="email" class="w-100" maxlength="50">
+            <input id="company-email" type="email" class="w-100" maxlength="50" required>
 
             <button id="create-initial-company-submit" type="submit" class="my-2 w-100">Save</button>
         </form>

@@ -8,17 +8,17 @@
     <link href="./styles.css" rel="stylesheet">
     <title>Invoice Maker</title>
   </head>
-  <body>
-    <header class="w-100 position-relative">
-      <h1 class="fs-3 text-center">Invoice Maker</h1>
-      <button id="edit-profile" class="position-absolute bottom-0 end-0 me-2">Edit Profile</button>
+  <body class="vh-100">
+    <header class="w-100 position-fixed p-2">
+      <h1 class="fs-3 text-center m-0">Invoice Maker</h1>
+      <button id="edit-profile" class="position-absolute top-50 translate-middle-y end-0 me-2">Edit Profile</button>
     </header>
 
-    <main class="d-flex flex-row">
-      <div id="sidebar" class="w-75">
+    <main id="home-page" class="">
+      <div id="sidebar" class="vh-100">
         <ol id="company-list"> <!-- ordered list -->
           <li id="create-company" class="m-2">
-            <button id="create-company-button" class="company w-100"> Create company profile +</button>
+            <button id="create-company-button" class="fw-bold company w-100"> Create company profile +</button>
           </li>
         </ol>
       </div>
@@ -35,186 +35,199 @@
     <script src="./renderer.js"></script>
 
     <template id="company-template">
-      <li id="company-profile-name" class="m-2">
-        <button id="company-profile-button" class="company w-100"></button>
+      <li id="company-profile-name" class="m-2 fw-bold">
+        <button id="company-profile-button" class="fw-bold company w-100"></button>
       </li>
     </template>
 
     <template id="create-company-template">
-      <form id="create-company-form">
+      <form id="create-company-form"  class="d-flex flex-column align-items-center">
         <div class="text-center">Name:</div>
-        <input id="company-name" type="text" class="w-100" maxlength="100" required>
+        <input id="company-name" type="text" class="w-75" maxlength="100" required>
 
         <div class="text-center">Invoice Number:</div>
-        <input id="invoice-number" type="text" class="w-100" maxlength="8" required>
+        <input id="invoice-number" type="text" class="w-75" maxlength="8" required>
 
         <div class="text-center">Address:</div>
-        <input id="company-address" type="text" class="w-100" maxlength="100" required>
+        <input id="company-address" type="text" class="w-75" maxlength="100" required>
 
-        <div class="text-center">City:</div>
-        <input id="company-city" type="text" class="w-100" maxlength="25" required>
-
-        <label for="state-initials">State:</label>
-        <select id="state-initials" name="state-initials" required>
-          <option value="AL">AL</option>
-          <option value="AK">AK</option>
-          <option value="AZ">AZ</option>
-          <option value="AR">AR</option>
-          <option value="AS">AS</option>
-          <option value="CA">CA</option>  
-          <option value="CO">CO</option>
-          <option value="CT">CT</option>
-          <option value="DE">DE</option>
-          <option value="DC">DC</option>
-          <option value="FL">FL</option>
-          <option value="GA">GA</option>
-          <option value="GU">GU</option>
-          <option value="HI">HI</option>
-          <option value="ID">ID</option>
-          <option value="IL">IL</option>
-          <option value="IN">IN</option>
-          <option value="IA">IA</option>
-          <option value="KS">KS</option>
-          <option value="KY">KY</option>
-          <option value="LA">LA</option>
-          <option value="ME">ME</option>
-          <option value="MD">MD</option>
-          <option value="MA">MA</option>
-          <option value="MI">MI</option>
-          <option value="MN">MN</option>
-          <option value="MS">MS</option>
-          <option value="MO">MO</option>
-          <option value="MT">MT</option>
-          <option value="NE">NE</option>
-          <option value="NV">NV</option>
-          <option value="NH">NH</option>
-          <option value="NJ">NJ</option>
-          <option value="NM">NM</option>
-          <option value="NY">NY</option>
-          <option value="NC">NC</option>
-          <option value="ND">ND</option>
-          <option value="MP">MP</option>
-          <option value="OH">OH</option>
-          <option value="OK">OK</option>
-          <option value="OR">OR</option>
-          <option value="PA">PA</option>
-          <option value="PR">PR</option>
-          <option value="RI">RI</option>
-          <option value="SC">SC</option>
-          <option value="SD">SD</option>
-          <option value="TN">TN</option>
-          <option value="TX">TX</option>
-          <option value="TT">TT</option>
-          <option value="UT">UT</option>
-          <option value="VT">VT</option>
-          <option value="VA">VA</option>
-          <option value="VI">VI</option>
-          <option value="WA">WA</option>
-          <option value="WV">WV</option>
-          <option value="WI">WI</option>
-          <option value="WY">WY</option>
-        </select>
+        <div class="container row g-0 w-75">
+          <div class="col col-lg-10 col-med-8 col-sm-8 text-center d-flex flex-column pe-2">
+            City:
+            <input id="company-city" type="text" class="w-75" maxlength="25" required>
+          </div>
+          
+          <div class="col col-lg-2 col-med-4 col-sm-4 ps-4 d-flex flex-column">
+            <label for="state-initials">State:</label>
+            <select id="state-initials" class="w-75" name="state-initials" required>
+              <option value="AL">AL</option>
+              <option value="AK">AK</option>
+              <option value="AZ">AZ</option>
+              <option value="AR">AR</option>
+              <option value="AS">AS</option>
+              <option value="CA">CA</option>
+              <option value="CO">CO</option>
+              <option value="CT">CT</option>
+              <option value="DE">DE</option>
+              <option value="DC">DC</option>
+              <option value="FL">FL</option>
+              <option value="GA">GA</option>
+              <option value="GU">GU</option>
+              <option value="HI">HI</option>
+              <option value="ID">ID</option>
+              <option value="IL">IL</option>
+              <option value="IN">IN</option>
+              <option value="IA">IA</option>
+              <option value="KS">KS</option>
+              <option value="KY">KY</option>
+              <option value="LA">LA</option>
+              <option value="ME">ME</option>
+              <option value="MD">MD</option>
+              <option value="MA">MA</option>
+              <option value="MI">MI</option>
+              <option value="MN">MN</option>
+              <option value="MS">MS</option>
+              <option value="MO">MO</option>
+              <option value="MT">MT</option>
+              <option value="NE">NE</option>
+              <option value="NV">NV</option>
+              <option value="NH">NH</option>
+              <option value="NJ">NJ</option>
+              <option value="NM">NM</option>
+              <option value="NY">NY</option>
+              <option value="NC">NC</option>
+              <option value="ND">ND</option>
+              <option value="MP">MP</option>
+              <option value="OH">OH</option>
+              <option value="OK">OK</option>
+              <option value="OR">OR</option>
+              <option value="PA">PA</option>
+              <option value="PR">PR</option>
+              <option value="RI">RI</option>
+              <option value="SC">SC</option>
+              <option value="SD">SD</option>
+              <option value="TN">TN</option>
+              <option value="TX">TX</option>
+              <option value="TT">TT</option>
+              <option value="UT">UT</option>
+              <option value="VT">VT</option>
+              <option value="VA">VA</option>
+              <option value="VI">VI</option>
+              <option value="WA">WA</option>
+              <option value="WV">WV</option>
+              <option value="WI">WI</option>
+              <option value="WY">WY</option>
+            </select>
+          </div>
+        </div>
 
         <div class="text-center">Zip Code:</div>
-        <input id="company-zip-code" type="number" class="w-100" maxlength="10" required>
+        <input id="company-zip-code" type="number" class="w-75" maxlength="10" required>
 
-        <button id="create-company-submit" type="submit" class="my-2 w-100">Save</button>
+        <button id="create-company-submit" type="submit" class="my-2 w-75">Save</button>
       </form>
     </template>
 
     <template id="edit-company-template">
-      <form id="edit-company-form">
+      <form id="edit-company-form" class="fw-bold d-flex flex-column align-items-center">
         <div class="text-center">Name:</div>
-        <input id="company-name" type="text" class="w-100" maxlength="100" required>
+        <input id="company-name" type="text" class="w-75" maxlength="100" required>
 
         <div class="text-center">Invoice Number:</div>
-        <input id="invoice-number" type="text" class="w-100" maxlength="8" required>
+        <input id="invoice-number" type="text" class="w-75" maxlength="8" required>
 
         <div class="text-center">Date:</div>
-        <input id="date" type="date" class="w-100" required>
+        <input id="date" type="date" class="w-75" required>
 
         <div class="text-center">Address:</div>
-        <input id="company-address" type="text" class="w-100" maxlength="100" required>
+        <input id="company-address" type="text" class="w-75" maxlength="100" required>
 
-        <div class="text-center">City:</div>
-        <input id="company-city" type="text" class="w-100" maxlength="25" required>
-
-        <label for="state-initials">State:</label>
-        <select id="state-initials" name="state-initials" required>
-          <option value="AL">AL</option>
-          <option value="AK">AK</option>
-          <option value="AZ">AZ</option>
-          <option value="AR">AR</option>
-          <option value="AS">AS</option>
-          <option value="CA">CA</option>
-          <option value="CO">CO</option>
-          <option value="CT">CT</option>
-          <option value="DE">DE</option>
-          <option value="DC">DC</option>
-          <option value="FL">FL</option>
-          <option value="GA">GA</option>
-          <option value="GU">GU</option>
-          <option value="HI">HI</option>
-          <option value="ID">ID</option>
-          <option value="IL">IL</option>
-          <option value="IN">IN</option>
-          <option value="IA">IA</option>
-          <option value="KS">KS</option>
-          <option value="KY">KY</option>
-          <option value="LA">LA</option>
-          <option value="ME">ME</option>
-          <option value="MD">MD</option>
-          <option value="MA">MA</option>
-          <option value="MI">MI</option>
-          <option value="MN">MN</option>
-          <option value="MS">MS</option>
-          <option value="MO">MO</option>
-          <option value="MT">MT</option>
-          <option value="NE">NE</option>
-          <option value="NV">NV</option>
-          <option value="NH">NH</option>
-          <option value="NJ">NJ</option>
-          <option value="NM">NM</option>
-          <option value="NY">NY</option>
-          <option value="NC">NC</option>
-          <option value="ND">ND</option>
-          <option value="MP">MP</option>
-          <option value="OH">OH</option>
-          <option value="OK">OK</option>
-          <option value="OR">OR</option>
-          <option value="PA">PA</option>
-          <option value="PR">PR</option>
-          <option value="RI">RI</option>
-          <option value="SC">SC</option>
-          <option value="SD">SD</option>
-          <option value="TN">TN</option>
-          <option value="TX">TX</option>
-          <option value="TT">TT</option>
-          <option value="UT">UT</option>
-          <option value="VT">VT</option>
-          <option value="VA">VA</option>
-          <option value="VI">VI</option>
-          <option value="WA">WA</option>
-          <option value="WV">WV</option>
-          <option value="WI">WI</option>
-          <option value="WY">WY</option>
-        </select>
+        <div class="container row g-0 w-75">
+          <div class="col col-lg-10 col-med-8 col-sm-8 text-center d-flex flex-column pe-2">
+            City:
+            <input id="company-city" type="text" class="w-100" maxlength="25" required>
+          </div>
+          
+          <div class="col col-lg-2 col-med-4 col-sm-4 ps-4 d-flex flex-column">
+            <label for="state-initials">State:</label>
+            <select id="state-initials" class="w-75" name="state-initials" required>
+              <option value="AL">AL</option>
+              <option value="AK">AK</option>
+              <option value="AZ">AZ</option>
+              <option value="AR">AR</option>
+              <option value="AS">AS</option>
+              <option value="CA">CA</option>
+              <option value="CO">CO</option>
+              <option value="CT">CT</option>
+              <option value="DE">DE</option>
+              <option value="DC">DC</option>
+              <option value="FL">FL</option>
+              <option value="GA">GA</option>
+              <option value="GU">GU</option>
+              <option value="HI">HI</option>
+              <option value="ID">ID</option>
+              <option value="IL">IL</option>
+              <option value="IN">IN</option>
+              <option value="IA">IA</option>
+              <option value="KS">KS</option>
+              <option value="KY">KY</option>
+              <option value="LA">LA</option>
+              <option value="ME">ME</option>
+              <option value="MD">MD</option>
+              <option value="MA">MA</option>
+              <option value="MI">MI</option>
+              <option value="MN">MN</option>
+              <option value="MS">MS</option>
+              <option value="MO">MO</option>
+              <option value="MT">MT</option>
+              <option value="NE">NE</option>
+              <option value="NV">NV</option>
+              <option value="NH">NH</option>
+              <option value="NJ">NJ</option>
+              <option value="NM">NM</option>
+              <option value="NY">NY</option>
+              <option value="NC">NC</option>
+              <option value="ND">ND</option>
+              <option value="MP">MP</option>
+              <option value="OH">OH</option>
+              <option value="OK">OK</option>
+              <option value="OR">OR</option>
+              <option value="PA">PA</option>
+              <option value="PR">PR</option>
+              <option value="RI">RI</option>
+              <option value="SC">SC</option>
+              <option value="SD">SD</option>
+              <option value="TN">TN</option>
+              <option value="TX">TX</option>
+              <option value="TT">TT</option>
+              <option value="UT">UT</option>
+              <option value="VT">VT</option>
+              <option value="VA">VA</option>
+              <option value="VI">VI</option>
+              <option value="WA">WA</option>
+              <option value="WV">WV</option>
+              <option value="WI">WI</option>
+              <option value="WY">WY</option>
+            </select>
+          </div>
+        </div>
 
         <div class="text-center">Zip Code:</div>
-        <input id="company-zip-code" type="number" class="w-100" maxlength="10" required>
+        <input id="company-zip-code" type="number" class="w-75" maxlength="10" required>
 
         <div class="text-center">Quantity:</div>
-        <input id="company-quantity" type="number" class="w-100" maxlength="4">
+        <input id="company-quantity" type="number" class="w-75" maxlength="4">
 
         <div class="text-center">Unit Price:</div>
-        <input id="company-unit-price" type="number" class="w-100" maxlength="8">
+        <input id="company-unit-price" type="number" class="w-75" maxlength="8">
 
         <div class="text-center">Description:</div>
-        <input id="company-description" type="text" class="w-100" maxlength="150">
+        <input id="company-description" type="text" class="w-75" maxlength="150">
 
-        <button id="save" type="submit">Save</button>
-
-        <button id="create-file-button" type="submit">Create file.</button>
+        <div class="w-75 d-flex flex-row">
+          <button id="save" class="w-100 my-2 me-2" type="submit">Save</button>
+          <button id="create-file-button" class="w-100 my-2 ms-2" type="submit">Create file.</button>
+        </div>
       </form>
     </template>
   </body>

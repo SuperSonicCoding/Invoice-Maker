@@ -224,12 +224,13 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
         // adds a cancel button to go back to the home page
         const cancelButton = document.createElement('button');
         cancelButton.id = 'cancel-edit-company';
-        cancelButton.classList.add('my-2', 'w-100');
+        cancelButton.classList.add('my-2', 'ms-2', 'w-100');
         cancelButton.innerText = 'Cancel';
         cancelButton.addEventListener('click', e => {
             window.location.href = 'index.html';
         });
-        currentCompanyForm.appendChild(cancelButton);
+        const saveCancel = document.getElementById('save-cancel');
+        saveCancel.appendChild(cancelButton);
 
         document.getElementById('title').innerText = "Update Company Profile Data";
         // populates fields

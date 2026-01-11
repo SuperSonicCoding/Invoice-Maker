@@ -1,20 +1,67 @@
 /* styles.css */
+/* body, header, main, h1, p {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+} */
+
+body {
+    /* overflow: auto; */
+}
+
+header {
+    /* background-color: #bb4a32; */
+    /* background-color: #e08653; */
+    background-color: #591a0b;
+    color: white;
+    border-bottom: 2px solid #441d15;
+    z-index: 9999;
+    max-height: 45px;
+    /* position: sticky;
+    top: 0; */
+    /* color: #7f3431; */
+    /* overflow: hidden; */
+}
+
+#home-page {
+    /* background-color: #e7d29b; */
+    /* margin-top: 100px; */
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 3fr;
+    grid-template-areas: 
+    "sidebar info";
+}
 
 #sidebar {
-    border: 1px solid black;
+    grid-area: sidebar;
+    /* border-left: 1px solid #e68b4d; */
+    border-right: 2px solid #441d15;
+    background-color: #9bc2a1;
+    margin-top: 45px;
+    /* margin-bottom: 45px; */
+    /* width:  */
+    overflow-y: auto;
+    height: calc(100vh - 45px) !important; /** makes the entire page not scrollable by subtracting
+                                                the height of the header from the body */
 }
 
 #edit-info {
-    border: 1px solid black;
-}
-
-#file-preview{
-    border: 1px solid black;
+    grid-area: info;
+    /* border: 1px solid #e68b4d; */
+    /* background-color: #5f8665; */
+    /* margin-top: 45px;
+    margin-left: 100px; */
+    margin-top: 45px;
+    overflow: auto;
+    height: calc(100vh - 45px) !important;
 }
 
 .company {
     border-radius: 5px;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px #e68b4d;
+    /* color: #4c5d4c; */
+    color: #b33922;
 }
 
 ol {
@@ -31,6 +78,26 @@ button {
     border-radius: 5px;
 }
 
+#edit-profile, #save, #create-file-button, #create-company-submits,
+#create-initial-company-submit, #cancel-edit-company {
+    border-color: #305035;
+    color: #305035;
+    background-color: #d6ffdd;
+    font-weight: bold;
+}
+
+#edit-profile:active {
+    background-color: #7e9582;
+}
+
 .selected {
-    background-color: gray;
+    background-color: #fae9bc;
+}
+
+label {
+    display: block;
+}
+
+input {
+    margin-bottom: 8px;
 }

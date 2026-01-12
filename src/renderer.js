@@ -72,7 +72,9 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                             const unitPrice = document.getElementById('company-unit-price').value;
                             const description = document.getElementById('company-description').value;
                             const id = company.id;
-                            const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id})
+                            const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
+                                location.reload();
+                            });
                             console.log('update res:', response);
                         } else if (buttonId == 'create-file-button') {
                             const fullName = user.full_name;
@@ -104,14 +106,26 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                             const companyProfileStateInitials = company.state_initials;
                             const companyProfileZipCode = company.zip_code
                             const quantity = company.quantity;
+                            console.log('quan', quantity);
                             const unitPrice = company.unit_price;
                             const description = company.description;
                             const filePath = company.file_path;
                             const id = company.id;
                             const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
                                 currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
-                                companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(res => {
-                                    location.reload();
+                                companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
+                                    // location.reload();
+                                    window.api.openFolderBox(newFilePath);
+                                    // const messageParams = {
+                                    //     message: "File successfully saved.",
+                                    //     buttons: ["Open folder location", "Close"],
+                                    //     defaultId: 1,
+                                    //     cancelId: 1,
+                                    // }
+                                    // const fileSuccess = dialog.showMessageBox([messageParams]);
+                                    // if (fileSuccess.response == 1) {
+                                    //     window.api.openFolder(newFilePath);
+                                    // }
                                 }).catch();
                             console.log('file creation res', response);
                         }

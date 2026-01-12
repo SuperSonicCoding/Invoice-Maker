@@ -6,7 +6,7 @@ const fs = require("fs");
 const docx = require("docx");
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, dialog, session } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const path = require('node:path')
 const sqlite3 = require('sqlite3').verbose();
 
@@ -179,6 +179,33 @@ async function warnOverwrite(browserWindow, file) {
     return false;
   }
 }
+
+// handles opening folder location after file save if the user wants to
+ipcMain.handle('open-folder', async (event, data) => {
+  return new Promise(async (resolve, reject) => {
+    console.log('path', data);
+    const options = {
+      message: "File successfully saved.",
+      type: "info",
+      buttons: ["Open folder location", "Close"],
+      title: "Successful file save.",
+      defaultId: 1,
+      cancelId: 1,
+    }
+
+    const fileSuccess = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), options);
+    if (fileSuccess.response == 0) {
+        try {
+          shell.showItemInFolder(`${data}.docx`);
+          resolve('successfully opened file');
+        } catch {
+          reject('error opening file');
+        }
+    } else {
+      resolve('folder box closed');
+    }
+  })
+}) 
 
 // handles creating a document
 ipcMain.handle('create-file', async (event, data) => {
@@ -827,7 +854,7 @@ ipcMain.handle('create-file', async (event, data) => {
 
                         children: [
                           new docx.TextRun({
-                            text: `$${unitPrice}`,
+                            text: `$${(unitPrice).toFixed(2)}`,
                             size: 24,
                             font: "Arial (Body)",
                           })
@@ -2068,8 +2095,10 @@ ipcMain.handle('create-file', async (event, data) => {
             }]
           })
 
+          let fileOpen = false;
+
           // saves the file
-          docx.Packer.toBuffer(doc).then(buffer => {
+          await docx.Packer.toBuffer(doc).then(buffer => {
             fs.writeFileSync(`${newFilePath}.docx`, buffer);
             const updateFileCreate = db.prepare('UPDATE companies SET invoice_number=?, file_path=? WHERE id=?');
             updateFileCreate.run(invoiceNumber + 1, newFilePath, id, function(err) {
@@ -2086,10 +2115,15 @@ ipcMain.handle('create-file', async (event, data) => {
             if (err.code == 'EBUSY') {
               // if the user attempts to save while the doc is open
               dialog.showErrorBox("Cannot overwrite file while file is open.", "Close file to overwrite successfully.")
+              fileOpen = true;
             }
           });
 
-          resolve('file successfully made');
+          if (fileOpen) {
+            reject('No overwrite since file open.');
+          }
+
+          resolve(newFilePath);
         } else {
           reject('No overwrite or cancelled');
         }

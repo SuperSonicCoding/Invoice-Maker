@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('api',
     updateCompany: (data) => ipcRenderer.invoke('update-company', data),
     updateCurrentCompany: (data) => ipcRenderer.invoke('update-current-company', data),
     createFile: (data) => ipcRenderer.invoke('create-file', data),
+    openFolderBox: (data) => ipcRenderer.invoke('open-folder', data),
   }
 )
 

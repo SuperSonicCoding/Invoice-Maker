@@ -86,7 +86,8 @@ button {
     font-weight: bold;
 }
 
-#edit-profile:active {
+#edit-profile:active, #save:active, #create-file-button:active, #create-company-submits:active,
+#create-initial-company-submit:active, #cancel-edit-company:active {
     background-color: #7e9582;
 }
 

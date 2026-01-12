@@ -204,8 +204,25 @@ ipcMain.handle('open-folder', async (event, data) => {
     } else {
       resolve('folder box closed');
     }
-  })
-}) 
+  });
+});
+
+// handles showing box to user that the file was saved
+ipcMain.handle('show-save', async (event) => {
+  return new Promise(async (resolve, reject) => {
+    const options = {
+      message: "Company profile successfully saved.",
+      type: "info",
+      buttons: ["Close"],
+      title: "Successful company profile save.",
+      defaultId: 0,
+      cancelId: 0,
+    }
+
+    await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), options);
+    resolve('succussful save box');
+  });
+});
 
 // handles creating a document
 ipcMain.handle('create-file', async (event, data) => {
@@ -756,7 +773,7 @@ ipcMain.handle('create-file', async (event, data) => {
 
                         children: [
                           new docx.TextRun({
-                            text: quantity,
+                            text: `${quantity}`,
                             size: 24,
                             font: "Arial (Body)",
                           })

@@ -2,190 +2,199 @@
 console.log('window', window.location.href.split('/').pop());
 // Gets the last thing in the file location and uses it to see if it is on the edit-profile page.
 // It is used in this if statement so that it doesn't rerun when the HTML page changes.
+
+function updateCompanySidebar(nameChanged, editInfo, user) {
+    // Handles populating companies on side
+    const companyList = document.getElementById('company-list');
+    console.log('list', companyList);
+    if (nameChanged) {
+        companyList.textContent = "";
+    }
+    window.api.getCompanies().then(companies => {
+        console.log('companies', companies);
+        companies.forEach(company => {
+            console.log('c', company);
+            const companyProfileTemplate = document.getElementById('company-template');
+            const companyProfile = companyProfileTemplate.content.cloneNode(true);
+            companyProfile.getElementById('company-profile-button').innerText = company.name;
+            companyProfile.getElementById('company-profile-button').id = company.id;
+            companyList.prepend(companyProfile);
+
+            // Adds click event listener to button on side
+            const currentCompanyProfile = document.getElementById(company.id);
+            console.log('company profile', currentCompanyProfile);
+            currentCompanyProfile.addEventListener('click', e => {
+                const companyProfiles = document.querySelectorAll('.company');
+                companyProfiles.forEach(companyProfile => {
+                    companyProfile.classList.remove('selected');
+                });
+                currentCompanyProfile.classList.add('selected');
+                const companyFormTemplate = document.getElementById('edit-company-template');
+                const companyForm = companyFormTemplate.content.cloneNode(true);
+                companyForm.getElementById('company-name').value = company.name;
+                companyForm.getElementById('invoice-initials').value = company.invoice_initials;
+                companyForm.getElementById('invoice-number').value = company.invoice_number;
+
+                // getting current date from stack overflow
+                // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+                let today = new Date();
+                const offset = today.getTimezoneOffset();
+                today = new Date(today.getTime() - (offset * 60 * 1000));
+                companyForm.getElementById('date').value = today.toISOString().split('T')[0];
+                // end of stack overflow usage
+
+                companyForm.getElementById('company-address').value = company.address;
+                companyForm.getElementById('company-city').value = company.city;
+                companyForm.getElementById('state-initials').value = company.state_initials;
+                companyForm.getElementById('company-zip-code').value = company.zip_code;
+                companyForm.getElementById('company-quantity').value = company.quantity;
+                companyForm.getElementById('company-unit-price').value = company.unit_price;
+                companyForm.getElementById('company-description').value = company.description;
+
+                editInfo.innerText = "";
+                editInfo.appendChild(companyForm);
+                intInput();
+                doubleInput();
+                initialsInput();
+
+                const editCompanyForm = document.getElementById('edit-company-form');
+                editCompanyForm.addEventListener('submit', e => {
+                    e.preventDefault();
+                    const buttonId = e.submitter.id;
+                    if (buttonId == 'save') {
+                        let updateSidebar = false;
+                        const name = document.getElementById('company-name').value;
+                        if (name != company.name) {
+                            updateSidebar = true;
+                        }
+                        const invoiceInitials = document.getElementById('invoice-initials').value;
+                        const invoiceNumber = document.getElementById('invoice-number').value;
+                        const address = document.getElementById('company-address').value;
+                        const city = document.getElementById('company-city').value;
+                        const stateInitials = document.getElementById('state-initials').value;
+                        const zipCode = document.getElementById('company-zip-code').value;
+                        const quantity = document.getElementById('company-quantity').value;
+                        const unitPrice = document.getElementById('company-unit-price').value;
+                        const description = document.getElementById('company-description').value;
+                        const id = company.id;
+                        const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
+                            // location.reload();
+                            if (updateSidebar) {
+                                updateCompanySidebar(true, editInfo, user);
+                            }
+                            window.api.showSaveBox();
+                        });
+                        console.log('update res:', response);
+                    } else if (buttonId == 'create-file-button') {
+                        const fullName = user.full_name;
+                        const currentCompanyName = user.name;
+                        const currentCompanyAddress = user.address;
+                        const currentCompanyCity = user.city;
+                        const currentCompanyStateInitials = user.state_initials;
+                        const currentCompanyZipCode = user.zip_code;
+                        const phoneNumber = user.phone_number;
+                        const email = user.email;
+
+                        // const companyProfileName = document.getElementById('company-name').value;
+                        // const invoiceNumber = document.getElementById('invoice-number').value;
+                        // const date = document.getElementById('date').value;
+                        // const companyProfileAddress = document.getElementById('company-address').value;
+                        // const companyProfileCity = document.getElementById('company-city').value;
+                        // const companyProfileStateInitials = document.getElementById('state-initials').value;
+                        // const companyProfileZipCode = document.getElementById('company-zip-code').value;
+                        // const quantity = document.getElementById('company-quantity').value;
+                        // const unitPrice = document.getElementById('company-unit-price').value;
+                        // const description = document.getElementById('company-description').value;
+
+                        const companyProfileName = company.name;
+                        const invoiceInitials = company.invoice_initials;
+                        const invoiceNumber = company.invoice_number;
+                        const date = document.getElementById('date').value;
+                        const companyProfileAddress = company.address;
+                        const companyProfileCity = company.city;
+                        const companyProfileStateInitials = company.state_initials;
+                        const companyProfileZipCode = company.zip_code
+                        const quantity = company.quantity;
+                        console.log('quan', quantity);
+                        const unitPrice = company.unit_price;
+                        const description = company.description;
+                        const filePath = company.file_path;
+                        const id = company.id;
+                        const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
+                            currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
+                            companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
+                                window.api.openFolderBox(newFilePath);
+                            }).catch();
+                        console.log('file creation res', response);
+                    }
+                })
+
+            });
+        })
+    }).catch(err => {
+        console.log('err', err);
+    })
+
+    const createCompanyButtonTemplate = document.getElementById('create-company-button-template');
+    const createCompanyButtonClone = createCompanyButtonTemplate.content.cloneNode(true);
+    companyList.appendChild(createCompanyButtonClone);
+    const createCompanyButton = document.getElementById('create-company-button');
+    console.log('cc-button', createCompanyButton);
+    createCompanyButton.addEventListener('click', e => {
+        // e.preventDefault();
+        const companyProfiles = document.querySelectorAll('.company');
+        console.log('profiles', companyProfiles);
+        companyProfiles.forEach(companyProfile => {
+            companyProfile.classList.remove('selected');
+        });
+        createCompanyButton.classList.add('selected');
+        const createCompanyTemplate = document.getElementById('create-company-template');
+        const createCompany = createCompanyTemplate.content.cloneNode(true);
+        editInfo.innerText = "";
+        editInfo.appendChild(createCompany);
+        intInput();
+        initialsInput();
+
+        const createCompanyForm = document.getElementById('create-company-form');
+        createCompanyForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('company-name').value;
+            const number = document.getElementById('invoice-number').value;
+            const address = document.getElementById('company-address').value;
+            const city = document.getElementById('company-city').value;
+            const stateInitials = document.getElementById('state-initials').value;
+            const zipCode = document.getElementById('company-zip-code').value;
+
+            const response = window.api.createCompany({name, number, address, city, stateInitials, zipCode});
+            console.log('create res:', response);
+            location.reload();
+        })
+
+        // const submitButton = document.getElementById('create-company-submit');
+        // submitButton.addEventListener('submit', e => {
+        //     e.preventDefault();
+        //     const name = document.getElementById('company-name').value;
+        //     const number = document.getElementById('invoice-number').value;
+        //     const address = document.getElementById('company-address').value;
+        //     const city = document.getElementById('company-city').value;
+        //     const stateInitials = document.getElementById('state-initials').value;
+        //     const zipCode = document.getElementById('company-zip-code').value;
+
+        //     const response = window.api.createCompany({name, number, address, city, stateInitials, zipCode});
+        //     console.log('create res:', response);
+        // })
+    })
+}
+
 if (window.location.href.split('/').pop() != 'edit-profile.html') {
     window.api.getCurrentCompany().then(user => {
         console.log(user);
-
-        // Handles populating companies on side
-        const companyList = document.getElementById('company-list');
-        console.log('list', companyList);
-        window.api.getCompanies().then(companies => {
-            console.log('companies', companies);
-            companies.forEach(company => {
-                console.log('c', company);
-                const companyProfileTemplate = document.getElementById('company-template');
-                const companyProfile = companyProfileTemplate.content.cloneNode(true);
-                companyProfile.getElementById('company-profile-button').innerText = company.name;
-                companyProfile.getElementById('company-profile-button').id = company.id;
-                companyList.prepend(companyProfile);
-
-                // Adds click event listener to button on side
-                const currentCompanyProfile = document.getElementById(company.id);
-                console.log('company profile', currentCompanyProfile);
-                currentCompanyProfile.addEventListener('click', e => {
-                    const companyProfiles = document.querySelectorAll('.company');
-                    companyProfiles.forEach(companyProfile => {
-                        companyProfile.classList.remove('selected');
-                    });
-                    currentCompanyProfile.classList.add('selected');
-                    const companyFormTemplate = document.getElementById('edit-company-template');
-                    const companyForm = companyFormTemplate.content.cloneNode(true);
-                    companyForm.getElementById('company-name').value = company.name;
-                    companyForm.getElementById('invoice-initials').value = company.invoice_initials;
-                    companyForm.getElementById('invoice-number').value = company.invoice_number;
-
-                    // getting current date from stack overflow
-                    // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-                    let today = new Date();
-                    const offset = today.getTimezoneOffset();
-                    today = new Date(today.getTime() - (offset * 60 * 1000));
-                    companyForm.getElementById('date').value = today.toISOString().split('T')[0];
-                    // end of stack overflow usage
-
-                    companyForm.getElementById('company-address').value = company.address;
-                    companyForm.getElementById('company-city').value = company.city;
-                    companyForm.getElementById('state-initials').value = company.state_initials;
-                    companyForm.getElementById('company-zip-code').value = company.zip_code;
-                    companyForm.getElementById('company-quantity').value = company.quantity;
-                    companyForm.getElementById('company-unit-price').value = company.unit_price;
-                    companyForm.getElementById('company-description').value = company.description;
-
-                    editInfo.innerText = "";
-                    editInfo.appendChild(companyForm);
-                    intInput();
-                    doubleInput();
-
-                    const editCompanyForm = document.getElementById('edit-company-form');
-                    editCompanyForm.addEventListener('submit', e => {
-                        e.preventDefault();
-                        const buttonId = e.submitter.id;
-                        if (buttonId == 'save') {
-                            console.log('save save save');
-                            const name = document.getElementById('company-name').value;
-                            const invoiceInitials = document.getElementById('invoice-initials').value;
-                            const invoiceNumber = document.getElementById('invoice-number').value;
-                            const address = document.getElementById('company-address').value;
-                            const city = document.getElementById('company-city').value;
-                            const stateInitials = document.getElementById('state-initials').value;
-                            const zipCode = document.getElementById('company-zip-code').value;
-                            const quantity = document.getElementById('company-quantity').value;
-                            const unitPrice = document.getElementById('company-unit-price').value;
-                            const description = document.getElementById('company-description').value;
-                            const id = company.id;
-                            const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
-                                location.reload();
-                            });
-                            console.log('update res:', response);
-                        } else if (buttonId == 'create-file-button') {
-                            const fullName = user.full_name;
-                            const currentCompanyName = user.name;
-                            const currentCompanyAddress = user.address;
-                            const currentCompanyCity = user.city;
-                            const currentCompanyStateInitials = user.state_initials;
-                            const currentCompanyZipCode = user.zip_code;
-                            const phoneNumber = user.phone_number;
-                            const email = user.email;
-
-                            // const companyProfileName = document.getElementById('company-name').value;
-                            // const invoiceNumber = document.getElementById('invoice-number').value;
-                            // const date = document.getElementById('date').value;
-                            // const companyProfileAddress = document.getElementById('company-address').value;
-                            // const companyProfileCity = document.getElementById('company-city').value;
-                            // const companyProfileStateInitials = document.getElementById('state-initials').value;
-                            // const companyProfileZipCode = document.getElementById('company-zip-code').value;
-                            // const quantity = document.getElementById('company-quantity').value;
-                            // const unitPrice = document.getElementById('company-unit-price').value;
-                            // const description = document.getElementById('company-description').value;
-
-                            const companyProfileName = company.name;
-                            const invoiceInitials = company.invoice_initials;
-                            const invoiceNumber = company.invoice_number;
-                            const date = document.getElementById('date').value;
-                            const companyProfileAddress = company.address;
-                            const companyProfileCity = company.city;
-                            const companyProfileStateInitials = company.state_initials;
-                            const companyProfileZipCode = company.zip_code
-                            const quantity = company.quantity;
-                            console.log('quan', quantity);
-                            const unitPrice = company.unit_price;
-                            const description = company.description;
-                            const filePath = company.file_path;
-                            const id = company.id;
-                            const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                                currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
-                                companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
-                                    // location.reload();
-                                    window.api.openFolderBox(newFilePath);
-                                    // const messageParams = {
-                                    //     message: "File successfully saved.",
-                                    //     buttons: ["Open folder location", "Close"],
-                                    //     defaultId: 1,
-                                    //     cancelId: 1,
-                                    // }
-                                    // const fileSuccess = dialog.showMessageBox([messageParams]);
-                                    // if (fileSuccess.response == 1) {
-                                    //     window.api.openFolder(newFilePath);
-                                    // }
-                                }).catch();
-                            console.log('file creation res', response);
-                        }
-                    })
-
-                });
-            })
-        }).catch(err => {
-            console.log('err', err);
-        })
 
         // Handles creating a new company
         const editInfo = document.getElementById('edit-info');
         console.log('middle', editInfo);
 
-        const createCompanyButton = document.getElementById('create-company-button');
-        console.log('cc-button', createCompanyButton);
-        createCompanyButton.addEventListener('click', e => {
-            // e.preventDefault();
-            const companyProfiles = document.querySelectorAll('.company');
-            console.log('profiles', companyProfiles);
-            companyProfiles.forEach(companyProfile => {
-                companyProfile.classList.remove('selected');
-            });
-            createCompanyButton.classList.add('selected');
-            const createCompanyTemplate = document.getElementById('create-company-template');
-            const createCompany = createCompanyTemplate.content.cloneNode(true);
-            editInfo.innerText = "";
-            editInfo.appendChild(createCompany);
-            intInput();
-
-            const createCompanyForm = document.getElementById('create-company-form');
-            createCompanyForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const name = document.getElementById('company-name').value;
-                const number = document.getElementById('invoice-number').value;
-                const address = document.getElementById('company-address').value;
-                const city = document.getElementById('company-city').value;
-                const stateInitials = document.getElementById('state-initials').value;
-                const zipCode = document.getElementById('company-zip-code').value;
-
-                const response = window.api.createCompany({name, number, address, city, stateInitials, zipCode});
-                console.log('create res:', response);
-                location.reload();
-            })
-
-            // const submitButton = document.getElementById('create-company-submit');
-            // submitButton.addEventListener('submit', e => {
-            //     e.preventDefault();
-            //     const name = document.getElementById('company-name').value;
-            //     const number = document.getElementById('invoice-number').value;
-            //     const address = document.getElementById('company-address').value;
-            //     const city = document.getElementById('company-city').value;
-            //     const stateInitials = document.getElementById('state-initials').value;
-            //     const zipCode = document.getElementById('company-zip-code').value;
-
-            //     const response = window.api.createCompany({name, number, address, city, stateInitials, zipCode});
-            //     console.log('create res:', response);
-            // })
-        })
+        updateCompanySidebar(false, editInfo, user);
 
         // Handles if the user wants to edit their profile
         const editProfileButton = document.getElementById('edit-profile');
@@ -195,6 +204,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
         });
     }).catch(err => {
         // window.api.createCompany({name, number, address, city, zipCode});
+        console.log('err with creating main page or no user', err.message);
         window.location.href = 'edit-profile.html';
     })
 } else {
@@ -298,6 +308,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 }
 // window.location.href = 'edit-profile.html';
 
+// makes it so its only int input
 function intInput() {
     const intInputs = document.querySelectorAll('.int');
     intInputs.forEach(intInput => {
@@ -311,6 +322,7 @@ function intInput() {
         });
     });
 
+    // makes it so you can type a dash, used for zip code
     const dashInput = document.querySelector('.int-dash');
     dashInput.addEventListener('keydown', e => {
         const keyPressed = e.key;
@@ -322,6 +334,7 @@ function intInput() {
     })
 }
 
+// makes it so the user can put a period
 function doubleInput() {
     const doubleInputs = document.querySelectorAll('.int');
     doubleInputs.forEach(doubleInput => {
@@ -333,5 +346,23 @@ function doubleInput() {
                 e.preventDefault();
             }
         });
+    });
+}
+
+// makes all letters uppercase for the initials
+function initialsInput() {
+    const initialsInput = document.querySelector('.initials');
+    initialsInput.addEventListener('keydown', e => {
+        const keyPressed = e.key;
+        const keyIsLetter = /^[a-zA-z]/g.test(keyPressed);
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', ' '];
+        if (!keyIsLetter && !allowedKeys.includes(keyPressed)) {
+            e.preventDefault();
+        } else {
+            if (keyIsLetter && keyPressed.length == 1 && initialsInput.value.length < 4) {
+                e.preventDefault();
+                initialsInput.value += keyPressed.toUpperCase();
+            }
+        }
     });
 }

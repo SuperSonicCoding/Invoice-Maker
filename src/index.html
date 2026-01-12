@@ -17,9 +17,9 @@
     <main id="home-page" class="">
       <div id="sidebar" class="vh-100">
         <ol id="company-list"> <!-- ordered list -->
-          <li id="create-company" class="m-2">
+          <!-- <li id="create-company" class="m-2">
             <button id="create-company-button" class="fw-bold company w-100"> Create company profile +</button>
-          </li>
+          </li> -->
         </ol>
       </div>
 
@@ -33,6 +33,12 @@
 
     <!-- You can also require other files to run in this process -->
     <script src="./renderer.js"></script>
+
+    <template id="create-company-button-template">
+      <li id="create-company" class="m-2">
+        <button id="create-company-button" class="fw-bold company w-100"> Create company profile +</button>
+      </li>
+    </template>
 
     <template id="company-template">
       <li id="company-profile-name" class="m-2 fw-bold">
@@ -48,7 +54,7 @@
         <div class="w-75 d-flex flex-row">
           <div class="d-flex flex-column w-100">
             <div class="text-center">Invoice Initials:</div>
-            <input id="invoice-initials" type="text" class="w-100 me-2" maxlength="4" required>
+            <input id="invoice-initials" type="text" class="w-100 me-2 initials" maxlength="4" required>
           </div>
 
           <div class="d-flex flex-column w-100">
@@ -143,14 +149,14 @@
         <input id="company-name" type="text" class="w-75" maxlength="100" required>
 
         <div class="w-75 d-flex flex-row">
-          <div class="d-flex flex-column w-100">
-            <div class="text-center">Invoice Initials:</div>
-            <input id="invoice-initials" type="text" class="w-100 me-2" maxlength="4" required>
+          <div class="d-flex flex-column w-100 me-2">
+            <div class="text-center w-100">Invoice Initials:</div>
+            <input id="invoice-initials" type="text" class="w-100 initials" maxlength="4" required>
           </div>
 
-          <div class="d-flex flex-column w-100">
-            <div class="text-center">Invoice Number:</div>
-            <input id="invoice-number" type="text" inputmode="numeric" class="w-100 ms-2 int" maxlength="5" required>
+          <div class="d-flex flex-column w-100 ms-2">
+            <div class="text-center w-100">Invoice Number:</div>
+            <input id="invoice-number" type="text" inputmode="numeric" class="w-100 int" maxlength="5" required>
           </div>
         </div>
 

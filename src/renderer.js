@@ -31,6 +31,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                     const companyFormTemplate = document.getElementById('edit-company-template');
                     const companyForm = companyFormTemplate.content.cloneNode(true);
                     companyForm.getElementById('company-name').value = company.name;
+                    companyForm.getElementById('invoice-initials').value = company.invoice_initials;
                     companyForm.getElementById('invoice-number').value = company.invoice_number;
 
                     // getting current date from stack overflow
@@ -51,6 +52,8 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 
                     editInfo.innerText = "";
                     editInfo.appendChild(companyForm);
+                    intInput();
+                    doubleInput();
 
                     const editCompanyForm = document.getElementById('edit-company-form');
                     editCompanyForm.addEventListener('submit', e => {
@@ -59,6 +62,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                         if (buttonId == 'save') {
                             console.log('save save save');
                             const name = document.getElementById('company-name').value;
+                            const invoiceInitials = document.getElementById('invoice-initials').value;
                             const invoiceNumber = document.getElementById('invoice-number').value;
                             const address = document.getElementById('company-address').value;
                             const city = document.getElementById('company-city').value;
@@ -68,7 +72,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                             const unitPrice = document.getElementById('company-unit-price').value;
                             const description = document.getElementById('company-description').value;
                             const id = company.id;
-                            const response = window.api.updateCompany({name, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id})
+                            const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id})
                             console.log('update res:', response);
                         } else if (buttonId == 'create-file-button') {
                             const fullName = user.full_name;
@@ -92,6 +96,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                             // const description = document.getElementById('company-description').value;
 
                             const companyProfileName = company.name;
+                            const invoiceInitials = company.invoice_initials;
                             const invoiceNumber = company.invoice_number;
                             const date = document.getElementById('date').value;
                             const companyProfileAddress = company.address;
@@ -104,7 +109,10 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
                             const filePath = company.file_path;
                             const id = company.id;
                             const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                                currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id});
+                                currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
+                                companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(res => {
+                                    location.reload();
+                                }).catch();
                             console.log('file creation res', response);
                         }
                     })
@@ -133,6 +141,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
             const createCompany = createCompanyTemplate.content.cloneNode(true);
             editInfo.innerText = "";
             editInfo.appendChild(createCompany);
+            intInput();
 
             const createCompanyForm = document.getElementById('create-company-form');
             createCompanyForm.addEventListener('submit', e => {
@@ -275,3 +284,40 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 }
 // window.location.href = 'edit-profile.html';
 
+function intInput() {
+    const intInputs = document.querySelectorAll('.int');
+    intInputs.forEach(intInput => {
+        intInput.addEventListener('keydown', e => {
+            const keyPressed = e.key;
+            const keyIsDigit = /^\d$/.test(keyPressed); // sees if the input is a digit or not
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
+            if ((!keyIsDigit && !allowedKeys.includes(keyPressed)) || keyPressed == ' ') {
+                e.preventDefault();
+            }
+        });
+    });
+
+    const dashInput = document.querySelector('.int-dash');
+    dashInput.addEventListener('keydown', e => {
+        const keyPressed = e.key;
+        const keyIsDigit = /^\d$/.test(keyPressed); // sees if the input is a digit or not
+        const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', '-'];
+        if ((!keyIsDigit && !allowedKeys.includes(keyPressed)) || keyPressed == ' ') {
+            e.preventDefault();
+        }
+    })
+}
+
+function doubleInput() {
+    const doubleInputs = document.querySelectorAll('.int');
+    doubleInputs.forEach(doubleInput => {
+        doubleInput.addEventListener('keydown', e => {
+            const keyPressed = e.key;
+            const keyIsDigit = /^\d$/.test(keyPressed); // sees if the input is a digit or not
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', '.'];
+            if ((!keyIsDigit && !allowedKeys.includes(keyPressed)) || keyPressed == ' ') {
+                e.preventDefault();
+            }
+        });
+    });
+}

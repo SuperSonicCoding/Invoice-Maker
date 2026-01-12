@@ -128,9 +128,9 @@ ipcMain.handle('get-companies', async (event) => {
 // handles updating data for a company
 ipcMain.handle('update-company', async (event, data) => {
   return new Promise((resolve, reject) => {
-    const {name, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id } = data;
-    const update = db.prepare('UPDATE companies SET name=?,invoice_number=?,address=?,city=?,state_initials=?,zip_code=?,quantity=?,unit_price=?, description=? WHERE id=?');
-    update.run(name, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id, function(err) {
+    const {name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id } = data;
+    const update = db.prepare('UPDATE companies SET name=?, invoice_initials=?, invoice_number=?,address=?,city=?,state_initials=?,zip_code=?,quantity=?,unit_price=?, description=? WHERE id=?');
+    update.run(name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id, function(err) {
       if (err) {
         console.log('err', err);
         reject(err.message);
@@ -185,7 +185,7 @@ ipcMain.handle('create-file', async (event, data) => {
   return new Promise((resolve, reject) => {
     try {
       const {fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials, currentCompanyZipCode, phoneNumber, email, 
-        companyProfileName, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id} = data;
+        companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id} = data;
 
       let defaultFilePath;
       if (filePath != null) {
@@ -199,6 +199,7 @@ ipcMain.handle('create-file', async (event, data) => {
         buttonLabel: "Save",
         title: "Choose a download location"
       }).then(async result => {
+        let newFilePath = result.filePath;
         // checks if file already exists
         let overwrite = true;
         if (fs.existsSync(`${result.filePath}.docx`)) {
@@ -329,7 +330,7 @@ ipcMain.handle('create-file', async (event, data) => {
                           breakText,
 
                           new docx.TextRun({
-                            text: "INVOICE # " + invoiceNumber,
+                            text: `INVOICE # ${invoiceInitials}${invoiceNumber}`,
                             size: 24,
                             font: "Arial (Body)",
                           }),
@@ -2059,14 +2060,14 @@ ipcMain.handle('create-file', async (event, data) => {
           // saves the file
           docx.Packer.toBuffer(doc).then(buffer => {
             fs.writeFileSync(`${result.filePath}.docx`, buffer);
-            const defaultFilePathSave = db.prepare('UPDATE companies SET file_path=? WHERE id=?');
-            defaultFilePathSave.run(result.filePath, id, function(err) {
+            const updateFileCreate = db.prepare('UPDATE companies SET invoice_number=?, file_path=? WHERE id=?');
+            updateFileCreate.run(invoiceNumber + 1, result.filePath, id, function(err) {
             if (err) {
                 console.log('err with file path save', err);
                 reject(err.message);
               } else {
                 resolve({ id: this.lastId, message: 'File path updated successfully' });
-                defaultFilePathSave.finalize();
+                updateFileCreate.finalize();
               }
             });
           }).catch(err => {

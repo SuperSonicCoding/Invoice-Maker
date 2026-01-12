@@ -199,17 +199,28 @@ ipcMain.handle('create-file', async (event, data) => {
         buttonLabel: "Save",
         title: "Choose a download location"
       }).then(async result => {
-        let newFilePath = result.filePath;
+        let newFilePath;
+        let warning = true;
+        console.log('filePath: ', result.filePath);
+        const periodIdx = result.filePath.lastIndexOf('.');
+        console.log('idx', periodIdx)
+        if (periodIdx != -1) {
+          newFilePath = result.filePath.substring(0, periodIdx);
+          warning = false;
+        } else {
+          newFilePath = result.filePath;
+        }
+        console.log('newFilePath: ', result.filePath);
         // checks if file already exists
         let overwrite = true;
-        if (fs.existsSync(`${result.filePath}.docx`)) {
-          const doOverwrite = await warnOverwrite(BrowserWindow.getFocusedWindow(), `${path.basename(result.filePath)}.docx`);
+        if (fs.existsSync(`${newFilePath}.docx`) && warning) {
+          const doOverwrite = await warnOverwrite(BrowserWindow.getFocusedWindow(), `${path.basename(newFilePath)}.docx`);
           if (!doOverwrite) {
             overwrite = false;
           }
         }
 
-        if (!result.canceled && result.filePath != "" && overwrite) {
+        if (!result.canceled && newFilePath != "" && overwrite) {
           // use when wanting to go to the next line or need extra space
           const breakText = new docx.TextRun({
             break: 1,
@@ -2059,9 +2070,9 @@ ipcMain.handle('create-file', async (event, data) => {
 
           // saves the file
           docx.Packer.toBuffer(doc).then(buffer => {
-            fs.writeFileSync(`${result.filePath}.docx`, buffer);
+            fs.writeFileSync(`${newFilePath}.docx`, buffer);
             const updateFileCreate = db.prepare('UPDATE companies SET invoice_number=?, file_path=? WHERE id=?');
-            updateFileCreate.run(invoiceNumber + 1, result.filePath, id, function(err) {
+            updateFileCreate.run(invoiceNumber + 1, newFilePath, id, function(err) {
             if (err) {
                 console.log('err with file path save', err);
                 reject(err.message);

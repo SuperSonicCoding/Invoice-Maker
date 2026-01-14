@@ -9,7 +9,7 @@
     <title>Invoice Maker</title>
   </head>
   <body class="vh-100">
-    <header class="w-100 position-fixed p-2">
+    <header id="home-header" class="w-100 position-fixed p-2">
       <h1 class="fs-3 text-center m-0">Invoice Maker</h1>
       <button id="edit-profile" class="position-absolute top-50 translate-middle-y end-0 me-2">Edit Profile</button>
     </header>
@@ -48,7 +48,7 @@
 
     <template id="create-company-template">
       <form id="create-company-form"  class="fw-bold d-flex flex-column align-items-center">
-        <div class="text-center">Name:</div>
+        <div class="text-center">Company Name:</div>
         <input id="company-name" type="text" class="w-75" maxlength="100" required>
 
         <div class="w-75 d-flex flex-row">
@@ -69,12 +69,12 @@
         <div class="container row g-0 w-75">
           <div class="col col-lg-10 col-med-8 col-sm-8 text-center d-flex flex-column pe-2">
             City:
-            <input id="company-city" type="text" class="w-75" maxlength="25" required>
+            <input id="company-city" type="text" class="w-100 file" maxlength="25" required>
           </div>
           
           <div class="col col-lg-2 col-med-4 col-sm-4 ps-4 d-flex flex-column">
             <label for="state-initials">State:</label>
-            <select id="state-initials" class="w-75" name="state-initials" required>
+            <select id="state-initials" class="w-75 file" name="state-initials" required>
               <option value="AL">AL</option>
               <option value="AK">AK</option>
               <option value="AZ">AZ</option>
@@ -146,35 +146,35 @@
     <template id="edit-company-template">
       <form id="edit-company-form" class="fw-bold d-flex flex-column align-items-center">
         <div class="text-center">Name:</div>
-        <input id="company-name" type="text" class="w-75" maxlength="100" required>
+        <input id="company-name" type="text" class="w-75 file" maxlength="100" required>
 
         <div class="w-75 d-flex flex-row">
           <div class="d-flex flex-column w-100 me-2">
             <div class="text-center w-100">Invoice Initials:</div>
-            <input id="invoice-initials" type="text" class="w-100 initials" maxlength="4" required>
+            <input id="invoice-initials" type="text" class="w-100 initials file" maxlength="4" required>
           </div>
 
           <div class="d-flex flex-column w-100 ms-2">
             <div class="text-center w-100">Invoice Number:</div>
-            <input id="invoice-number" type="text" inputmode="numeric" class="w-100 int" maxlength="5" required>
+            <input id="invoice-number" type="text" inputmode="numeric" class="w-100 int file" maxlength="5" required>
           </div>
         </div>
 
         <div class="text-center">Date:</div>
-        <input id="date" type="date" class="w-75" required>
+        <input id="date" type="date" class="w-75 file" required>
 
         <div class="text-center">Address:</div>
-        <input id="company-address" type="text" class="w-75" maxlength="100" required>
+        <input id="company-address" type="text" class="w-75 file" maxlength="100" required>
 
         <div class="container row g-0 w-75">
           <div class="col col-lg-10 col-med-8 col-sm-8 text-center d-flex flex-column pe-2">
             City:
-            <input id="company-city" type="text" class="w-100" maxlength="25" required>
+            <input id="company-city" type="text" class="w-100 file" maxlength="25" required>
           </div>
           
           <div class="col col-lg-2 col-med-4 col-sm-4 ps-4 d-flex flex-column">
             <label for="state-initials">State:</label>
-            <select id="state-initials" class="w-75" name="state-initials" required>
+            <select id="state-initials" class="w-75 file" name="state-initials" required>
               <option value="AL">AL</option>
               <option value="AK">AK</option>
               <option value="AZ">AZ</option>
@@ -237,16 +237,16 @@
         </div>
 
         <div class="text-center">Zip Code:</div>
-        <input id="company-zip-code" type="text" inputmode="numeric" class="w-75 int-dash" maxlength="10" required>
+        <input id="company-zip-code" type="text" inputmode="numeric" class="w-75 int-dash file" maxlength="10" required>
 
         <div class="text-center">Quantity:</div>
-        <input id="company-quantity" type="text" inputmode="numeric" class="w-75 int" maxlength="4">
+        <input id="company-quantity" type="text" inputmode="numeric" class="w-75 int file" maxlength="4">
 
         <div class="text-center">Unit Price:</div>
-        <input id="company-unit-price" type="text" inputmode="numeric" class="w-75 double" maxlength="8">
+        <input id="company-unit-price" type="text" inputmode="numeric" class="w-75 double file" maxlength="8">
 
         <div class="text-center">Description:</div>
-        <input id="company-description" type="text" class="w-75" maxlength="150">
+        <textarea id="company-description" type="text" class="w-75" maxlength="150 file"></textarea>
 
         <div class="w-75 d-flex flex-row">
           <button id="save" class="w-100 my-2 me-2" type="submit">Save</button>

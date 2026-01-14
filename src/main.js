@@ -77,9 +77,9 @@ ipcMain.handle('get-current-company', async (event) => {
 // handles creating a new company
 ipcMain.handle('create-company', async (event, data) => {
   return new Promise((resolve, reject)  => {
-    const {name, number, address, city, stateInitials, zipCode } = data;
-    const insert = db.prepare('INSERT INTO companies (name, invoice_number, address, city, state_initials, zip_code) VALUES (?,?,?,?,?,?)');
-    insert.run(name, number, address, city, stateInitials, zipCode, function(err) {
+    const {name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode } = data;
+    const insert = db.prepare('INSERT INTO companies (name, invoice_initials, invoice_number, address, city, state_initials, zip_code) VALUES (?,?,?,?,?,?,?)');
+    insert.run(name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, function(err) {
       if (err) {
         reject(err.message);
       } else {
@@ -188,7 +188,7 @@ ipcMain.handle('open-folder', async (event, data) => {
       message: "File successfully saved.",
       type: "info",
       buttons: ["Open folder location", "Close"],
-      title: "Successful file save.",
+      title: "Invoice Maker",
       defaultId: 1,
       cancelId: 1,
     }
@@ -214,7 +214,7 @@ ipcMain.handle('show-save', async (event) => {
       message: "Company profile successfully saved.",
       type: "info",
       buttons: ["Close"],
-      title: "Successful company profile save.",
+      title: "Invoice Maker",
       defaultId: 0,
       cancelId: 0,
     }
@@ -222,6 +222,23 @@ ipcMain.handle('show-save', async (event) => {
     await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), options);
     resolve('succussful save box');
   });
+});
+
+// handles showing box to user that the file was saved
+ipcMain.handle('show-save-before', async (event) => {
+  return new Promise(async (resolve, reject) => {
+    const options = {
+      message: "Changes detected. Do you want to save before changing profiles?",
+      type: "warning",
+      buttons: ["Save", "Do not save", "Cancel"],
+      title: "Invoice Maker",
+      defaultId: 2,
+      cancelId: 2,
+    }
+    const response = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), options);
+    resolve(response.response);
+  });
+
 });
 
 // handles creating a document
@@ -2118,7 +2135,7 @@ ipcMain.handle('create-file', async (event, data) => {
           await docx.Packer.toBuffer(doc).then(buffer => {
             fs.writeFileSync(`${newFilePath}.docx`, buffer);
             const updateFileCreate = db.prepare('UPDATE companies SET invoice_number=?, file_path=? WHERE id=?');
-            updateFileCreate.run(invoiceNumber + 1, newFilePath, id, function(err) {
+            updateFileCreate.run(parseInt(invoiceNumber) + 1, newFilePath, id, function(err) {
             if (err) {
                 console.log('err with file path save', err);
                 reject(err.message);

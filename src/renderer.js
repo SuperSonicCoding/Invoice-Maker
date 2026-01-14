@@ -3,13 +3,60 @@ console.log('window', window.location.href.split('/').pop());
 // Gets the last thing in the file location and uses it to see if it is on the edit-profile page.
 // It is used in this if statement so that it doesn't rerun when the HTML page changes.
 
-function updateCompanySidebar(nameChanged, editInfo, user) {
+let changed = false;
+let previousCompanyProfileId;
+// function addChangeListener(input, originalValue) {
+//     input.addEventListener('input', e => {
+//         const changedValue = input.value;
+//         if (!changed && changedValue != originalValue) {
+//             changed = true;
+//         }
+//     });
+// }
+
+function setUpInput(input, originalValue, validationMessage="") {
+    if (originalValue != null) {
+        input.addEventListener('input', e => {
+            const changedValue = input.value;
+            if (!changed && changedValue != originalValue) {
+                changed = true;
+            }
+        });
+    }
+
+    if (validationMessage != "") {
+        input.addEventListener('invalid', e => {
+            e.target.setCustomValidity(validationMessage);
+        });
+    }
+}
+
+function save(editInfo, user) {
+    const name = document.getElementById('company-name').value;
+    const invoiceInitials = document.getElementById('invoice-initials').value;
+    const invoiceNumber = document.getElementById('invoice-number').value;
+    const address = document.getElementById('company-address').value;
+    const city = document.getElementById('company-city').value;
+    const stateInitials = document.getElementById('state-initials').value;
+    const zipCode = document.getElementById('company-zip-code').value;
+    const quantity = document.getElementById('company-quantity').value;
+    const unitPrice = document.getElementById('company-unit-price').value;
+    const description = document.getElementById('company-description').value;
+    const id = previousCompanyProfileId;
+    const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
+        updateCompanySidebar(editInfo, user);
+        // fileButton.disabled = false;
+        // removeWarningBeforeFileCreation();
+        window.api.showSaveBox();
+    });
+    console.log('update res:', response);
+}
+
+function updateCompanySidebar(editInfo, user) {
     // Handles populating companies on side
     const companyList = document.getElementById('company-list');
     console.log('list', companyList);
-    if (nameChanged) {
-        companyList.textContent = "";
-    }
+    companyList.textContent = "";
     window.api.getCompanies().then(companies => {
         console.log('companies', companies);
         companies.forEach(company => {
@@ -22,113 +69,120 @@ function updateCompanySidebar(nameChanged, editInfo, user) {
 
             // Adds click event listener to button on side
             const currentCompanyProfile = document.getElementById(company.id);
-            console.log('company profile', currentCompanyProfile);
-            currentCompanyProfile.addEventListener('click', e => {
-                const companyProfiles = document.querySelectorAll('.company');
-                companyProfiles.forEach(companyProfile => {
-                    companyProfile.classList.remove('selected');
-                });
+            // Adds selected class to clicked profile if user saved through the warning given
+            if (company.id == previousCompanyProfileId) {
                 currentCompanyProfile.classList.add('selected');
-                const companyFormTemplate = document.getElementById('edit-company-template');
-                const companyForm = companyFormTemplate.content.cloneNode(true);
-                companyForm.getElementById('company-name').value = company.name;
-                companyForm.getElementById('invoice-initials').value = company.invoice_initials;
-                companyForm.getElementById('invoice-number').value = company.invoice_number;
-
-                // getting current date from stack overflow
-                // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-                let today = new Date();
-                const offset = today.getTimezoneOffset();
-                today = new Date(today.getTime() - (offset * 60 * 1000));
-                companyForm.getElementById('date').value = today.toISOString().split('T')[0];
-                // end of stack overflow usage
-
-                companyForm.getElementById('company-address').value = company.address;
-                companyForm.getElementById('company-city').value = company.city;
-                companyForm.getElementById('state-initials').value = company.state_initials;
-                companyForm.getElementById('company-zip-code').value = company.zip_code;
-                companyForm.getElementById('company-quantity').value = company.quantity;
-                companyForm.getElementById('company-unit-price').value = company.unit_price;
-                companyForm.getElementById('company-description').value = company.description;
-
-                editInfo.innerText = "";
-                editInfo.appendChild(companyForm);
-                intInput();
-                doubleInput();
-                initialsInput();
-
-                const editCompanyForm = document.getElementById('edit-company-form');
-                editCompanyForm.addEventListener('submit', e => {
-                    e.preventDefault();
-                    const buttonId = e.submitter.id;
-                    if (buttonId == 'save') {
-                        let updateSidebar = false;
-                        const name = document.getElementById('company-name').value;
-                        if (name != company.name) {
-                            updateSidebar = true;
-                        }
-                        const invoiceInitials = document.getElementById('invoice-initials').value;
-                        const invoiceNumber = document.getElementById('invoice-number').value;
-                        const address = document.getElementById('company-address').value;
-                        const city = document.getElementById('company-city').value;
-                        const stateInitials = document.getElementById('state-initials').value;
-                        const zipCode = document.getElementById('company-zip-code').value;
-                        const quantity = document.getElementById('company-quantity').value;
-                        const unitPrice = document.getElementById('company-unit-price').value;
-                        const description = document.getElementById('company-description').value;
-                        const id = company.id;
-                        const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
-                            // location.reload();
-                            if (updateSidebar) {
-                                updateCompanySidebar(true, editInfo, user);
-                            }
-                            window.api.showSaveBox();
-                        });
-                        console.log('update res:', response);
-                    } else if (buttonId == 'create-file-button') {
-                        const fullName = user.full_name;
-                        const currentCompanyName = user.name;
-                        const currentCompanyAddress = user.address;
-                        const currentCompanyCity = user.city;
-                        const currentCompanyStateInitials = user.state_initials;
-                        const currentCompanyZipCode = user.zip_code;
-                        const phoneNumber = user.phone_number;
-                        const email = user.email;
-
-                        // const companyProfileName = document.getElementById('company-name').value;
-                        // const invoiceNumber = document.getElementById('invoice-number').value;
-                        // const date = document.getElementById('date').value;
-                        // const companyProfileAddress = document.getElementById('company-address').value;
-                        // const companyProfileCity = document.getElementById('company-city').value;
-                        // const companyProfileStateInitials = document.getElementById('state-initials').value;
-                        // const companyProfileZipCode = document.getElementById('company-zip-code').value;
-                        // const quantity = document.getElementById('company-quantity').value;
-                        // const unitPrice = document.getElementById('company-unit-price').value;
-                        // const description = document.getElementById('company-description').value;
-
-                        const companyProfileName = company.name;
-                        const invoiceInitials = company.invoice_initials;
-                        const invoiceNumber = company.invoice_number;
-                        const date = document.getElementById('date').value;
-                        const companyProfileAddress = company.address;
-                        const companyProfileCity = company.city;
-                        const companyProfileStateInitials = company.state_initials;
-                        const companyProfileZipCode = company.zip_code
-                        const quantity = company.quantity;
-                        console.log('quan', quantity);
-                        const unitPrice = company.unit_price;
-                        const description = company.description;
-                        const filePath = company.file_path;
-                        const id = company.id;
-                        const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
-                            currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
-                            companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
-                                window.api.openFolderBox(newFilePath);
-                            }).catch();
-                        console.log('file creation res', response);
+            }
+            console.log('company profile', currentCompanyProfile);
+            currentCompanyProfile.addEventListener('click', async e => {
+                let cancel = false;
+                if (changed) {
+                    const changeResponse = await window.api.showSaveBeforeBox();
+                    if (changeResponse == 0) {
+                        changed = false;
+                        save(editInfo, user);
+                    } else if (changeResponse == 1) {
+                        changed = false;
+                    } else {
+                        cancel = true;
                     }
-                })
+                }
 
+                if (!cancel) {
+                    previousCompanyProfileId = company.id;
+                    const companyProfiles = document.querySelectorAll('.company');
+                    companyProfiles.forEach(companyProfile => {
+                        companyProfile.classList.remove('selected');
+                    });
+                    currentCompanyProfile.classList.add('selected');
+                    const companyFormTemplate = document.getElementById('edit-company-template');
+                    const companyForm = companyFormTemplate.content.cloneNode(true);
+                    setUpInput(companyForm.getElementById('company-name'), company.name, "Please input company name.");
+                    companyForm.getElementById('company-name').value = company.name;
+                    setUpInput(companyForm.getElementById('invoice-initials'), company.invoice_initials, "Please input company invoice initials.");
+                    companyForm.getElementById('invoice-initials').value = company.invoice_initials;
+                    setUpInput(companyForm.getElementById('invoice-number'), company.invoice_number, "Please input company invoice number.");
+                    companyForm.getElementById('invoice-number').value = company.invoice_number;
+
+                    // getting current date from stack overflow
+                    // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+                    let today = new Date();
+                    const offset = today.getTimezoneOffset();
+                    today = new Date(today.getTime() - (offset * 60 * 1000));
+                    companyForm.getElementById('date').value = today.toISOString().split('T')[0];
+                    // end of stack overflow usage
+
+                    setUpInput(companyForm.getElementById('company-address'), company.address, "Please input company address.");
+                    companyForm.getElementById('company-address').value = company.address;
+                    setUpInput(companyForm.getElementById('company-city'), company.city, "Please input company city.");
+                    companyForm.getElementById('company-city').value = company.city;
+                    setUpInput(companyForm.getElementById('state-initials'), company.state_initials, "Please select company state initials.");
+                    companyForm.getElementById('state-initials').value = company.state_initials;
+                    setUpInput(companyForm.getElementById('company-zip-code'), company.zip_code, "Please input company zip code.");
+                    companyForm.getElementById('company-zip-code').value = company.zip_code;
+                    setUpInput(companyForm.getElementById('company-quantity'), company.quantity);
+                    companyForm.getElementById('company-quantity').value = company.quantity;
+                    setUpInput(companyForm.getElementById('company-unit-price'), company.unit_price);
+                    companyForm.getElementById('company-unit-price').value = company.unit_price;
+                    setUpInput(companyForm.getElementById('company-description'), company.description);
+                    companyForm.getElementById('company-description').value = company.description;
+
+                    editInfo.innerText = "";
+                    editInfo.appendChild(companyForm);
+                    intInput();
+                    doubleInput();
+                    initialsInput();
+                    const editCompanyForm = document.getElementById('edit-company-form');
+                    console.log('ccp after', currentCompanyProfile);
+                    editCompanyForm.addEventListener('submit', e => {
+                        e.preventDefault();
+                        const buttonId = e.submitter.id;
+                        if (buttonId == 'save') {
+                            save(editInfo, user);
+                        } else if (buttonId == 'create-file-button') {
+                            const fullName = user.full_name;
+                            const currentCompanyName = user.name;
+                            const currentCompanyAddress = user.address;
+                            const currentCompanyCity = user.city;
+                            const currentCompanyStateInitials = user.state_initials;
+                            const currentCompanyZipCode = user.zip_code;
+                            const phoneNumber = user.phone_number;
+                            const email = user.email;
+
+                            // const companyProfileName = document.getElementById('company-name').value;
+                            // const invoiceNumber = document.getElementById('invoice-number').value;
+                            // const date = document.getElementById('date').value;
+                            // const companyProfileAddress = document.getElementById('company-address').value;
+                            // const companyProfileCity = document.getElementById('company-city').value;
+                            // const companyProfileStateInitials = document.getElementById('state-initials').value;
+                            // const companyProfileZipCode = document.getElementById('company-zip-code').value;
+                            // const quantity = document.getElementById('company-quantity').value;
+                            // const unitPrice = document.getElementById('company-unit-price').value;
+                            // const description = document.getElementById('company-description').value;
+
+                            const companyProfileName = document.getElementById('company-name').value;
+                            const invoiceInitials = document.getElementById('invoice-initials').value;
+                            const invoiceNumber = document.getElementById('invoice-number').value;
+                            const date = document.getElementById('date').value;
+                            const companyProfileAddress = document.getElementById('company-address').value;
+                            const companyProfileCity = document.getElementById('company-city').value;
+                            const companyProfileStateInitials = document.getElementById('state-initials').value;
+                            const companyProfileZipCode = document.getElementById('company-zip-code').value;
+                            const quantity = parseInt(document.getElementById('company-quantity').value);
+                            const unitPrice = parseFloat(document.getElementById('company-unit-price').value);
+                            const description = document.getElementById('company-description').value;
+                            const filePath = company.file_path;
+                            const id = company.id;
+                            const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
+                                currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
+                                companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
+                                    window.api.openFolderBox(newFilePath);
+                                    document.getElementById('invoice-number').value = parseInt(document.getElementById('invoice-number').value) + 1;
+                                }).catch();
+                            console.log('file creation res', response);
+                        }
+                    })
+                }
             });
         })
     }).catch(err => {
@@ -154,18 +208,26 @@ function updateCompanySidebar(nameChanged, editInfo, user) {
         editInfo.appendChild(createCompany);
         intInput();
         initialsInput();
+        setUpInput(document.getElementById('company-name'), null, "Please input company name.");
+        setUpInput(document.getElementById('invoice-initials'), null, "Please input company invoice initials.");
+        setUpInput(document.getElementById('invoice-number'), null, "Please input company invoice number.");
+        setUpInput(document.getElementById('company-address'), null, "Please input company address.");
+        setUpInput(document.getElementById('company-city'), null, "Please input company city.");
+        setUpInput(document.getElementById('state-initials'), null, "Please select company state initials.");
+        setUpInput(document.getElementById('company-zip-code'), null, "Please input company zip code.");
 
         const createCompanyForm = document.getElementById('create-company-form');
         createCompanyForm.addEventListener('submit', e => {
             e.preventDefault();
             const name = document.getElementById('company-name').value;
-            const number = document.getElementById('invoice-number').value;
+            const invoiceInitials = document.getElementById('invoice-initials').value;
+            const invoiceNumber = document.getElementById('invoice-number').value;
             const address = document.getElementById('company-address').value;
             const city = document.getElementById('company-city').value;
             const stateInitials = document.getElementById('state-initials').value;
             const zipCode = document.getElementById('company-zip-code').value;
 
-            const response = window.api.createCompany({name, number, address, city, stateInitials, zipCode});
+            const response = window.api.createCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode});
             console.log('create res:', response);
             location.reload();
         })
@@ -194,7 +256,7 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
         const editInfo = document.getElementById('edit-info');
         console.log('middle', editInfo);
 
-        updateCompanySidebar(false, editInfo, user);
+        updateCompanySidebar(editInfo, user);
 
         // Handles if the user wants to edit their profile
         const editProfileButton = document.getElementById('edit-profile');
@@ -336,7 +398,7 @@ function intInput() {
 
 // makes it so the user can put a period
 function doubleInput() {
-    const doubleInputs = document.querySelectorAll('.int');
+    const doubleInputs = document.querySelectorAll('.double');
     doubleInputs.forEach(doubleInput => {
         doubleInput.addEventListener('keydown', e => {
             const keyPressed = e.key;
@@ -350,7 +412,7 @@ function doubleInput() {
 }
 
 // makes all letters uppercase for the initials
-function initialsInput() {
+function initialsInput(fileButton = "") {
     const initialsInput = document.querySelector('.initials');
     initialsInput.addEventListener('keydown', e => {
         const keyPressed = e.key;
@@ -362,7 +424,27 @@ function initialsInput() {
             if (keyIsLetter && keyPressed.length == 1 && initialsInput.value.length < 4) {
                 e.preventDefault();
                 initialsInput.value += keyPressed.toUpperCase();
+                if (fileButton != "") {
+                    fileButton.disabled = true;
+                    addWarningBeforeFileCreation();
+                }
             }
         }
     });
+}
+
+function addWarningBeforeFileCreation() {
+    const companyForm = document.getElementById('edit-company-form');
+    const warning = document.createElement('p');
+    warning.innerText = "Save or refresh before file creation."
+    warning.classList.add('warning');
+    companyForm.appendChild(warning);
+}
+
+function removeWarningBeforeFileCreation() {
+    const companyForm = document.getElementById('edit-company-form');
+    const warning = document.querySelector('.warning');
+    console.log('warning', warning);
+    companyForm.removeChild(warning);
+    // company
 }

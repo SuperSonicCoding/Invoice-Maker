@@ -16,11 +16,14 @@ header {
     color: white;
     border-bottom: 2px solid #441d15;
     z-index: 9999;
-    max-height: 45px;
     /* position: sticky;
     top: 0; */
     /* color: #7f3431; */
     /* overflow: hidden; */
+}
+
+#home-header {
+    max-height: 45px;
 }
 
 #home-page {
@@ -70,15 +73,17 @@ ol {
     margin: 0;
 }
 
-input {
+input, button, textarea {
     border-radius: 5px;
 }
 
-button {
-    border-radius: 5px;
+textarea {
+    border-width: 2px;
+    border-top-color: black;
+    border-left-color: black;
 }
 
-#edit-profile, #save, #create-file-button, #create-company-submits,
+#edit-profile, #save, #create-file-button, #create-company-submit,
 #create-initial-company-submit, #cancel-edit-company {
     border-color: #305035;
     color: #305035;
@@ -101,4 +106,15 @@ label {
 
 input {
     margin-bottom: 8px;
+}
+
+#create-file-button:disabled {
+    border-color: black;
+    color: black;
+    background-color: darkgray;
+}
+
+.warning {
+    font-weight: bold;
+    color: #441d15;
 }

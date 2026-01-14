@@ -53,6 +53,23 @@ function save(editInfo, user) {
 }
 
 function updateCompanySidebar(editInfo, user) {
+    // handles save, not save, or cancel on exit when changes are detected
+    window.addEventListener('beforeunload', async e => {
+        if (changed) {
+            e.preventDefault();
+            const response = await window.api.showSaveBeforeExitBox();
+            console.log('close res', response);
+            if (response == 0) {
+                changed = false;
+                save(editInfo, user);
+                window.api.closeWindow();
+            } else if (response == 1) {
+                changed = false;
+                window.api.closeWindow();
+            }
+        }
+    });
+
     // Handles populating companies on side
     const companyList = document.getElementById('company-list');
     console.log('list', companyList);
@@ -77,7 +94,7 @@ function updateCompanySidebar(editInfo, user) {
             currentCompanyProfile.addEventListener('click', async e => {
                 let cancel = false;
                 if (changed) {
-                    const changeResponse = await window.api.showSaveBeforeBox();
+                    const changeResponse = await window.api.showSaveBeforeChangeBox();
                     if (changeResponse == 0) {
                         changed = false;
                         save(editInfo, user);

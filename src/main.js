@@ -224,8 +224,8 @@ ipcMain.handle('show-save', async (event) => {
   });
 });
 
-// handles showing box to user that the file was saved
-ipcMain.handle('show-save-before', async (event) => {
+// handles showing warning box to user to save before company profile change
+ipcMain.handle('show-save-before-change', async (event) => {
   return new Promise(async (resolve, reject) => {
     const options = {
       message: "Changes detected. Do you want to save before changing profiles?",
@@ -239,6 +239,26 @@ ipcMain.handle('show-save-before', async (event) => {
     resolve(response.response);
   });
 
+});
+
+// handles showing warning box to user to save before exiting software
+ipcMain.handle('show-save-before-exit', async (event) => {
+  console.log('closing');
+  const options = {
+    message: "Changes detected. Do you want to save before exiting?",
+    type: "warning",
+    buttons: ["Save", "Do not save", "Cancel"],
+    title: "Invoice Maker",
+    defaultId: 2,
+    cancelId: 2,
+  }
+
+  const response = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), options);
+  return response.response;
+});
+
+ipcMain.handle('close-window', (event) => {
+  mainWindow.close();
 });
 
 // handles creating a document

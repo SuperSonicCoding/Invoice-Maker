@@ -31,7 +31,7 @@ function setUpInput(input, originalValue, validationMessage="") {
     }
 }
 
-function save(editInfo, user) {
+function save(e, editInfo, user) {
     const name = document.getElementById('company-name').value;
     const invoiceInitials = document.getElementById('invoice-initials').value;
     const invoiceNumber = document.getElementById('invoice-number').value;
@@ -43,13 +43,17 @@ function save(editInfo, user) {
     const unitPrice = document.getElementById('company-unit-price').value;
     const description = document.getElementById('company-description').value;
     const id = previousCompanyProfileId;
-    const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
-        updateCompanySidebar(editInfo, user);
-        // fileButton.disabled = false;
-        // removeWarningBeforeFileCreation();
-        window.api.showSaveBox();
-    });
-    console.log('update res:', response);
+    if (name == "" || invoiceInitials == "" || invoiceNumber == "" || address == "" || city == "" || stateInitials == "" || zipCode == "") {
+        console.log('no save');
+    } else {
+        const response = window.api.updateCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode, quantity, unitPrice, description, id}).then(e => {
+            updateCompanySidebar(editInfo, user);
+            // fileButton.disabled = false;
+            // removeWarningBeforeFileCreation();
+            window.api.showSaveBox();
+        });
+        console.log('update res:', response);
+    }
 }
 
 function updateCompanySidebar(editInfo, user) {
@@ -190,6 +194,9 @@ function updateCompanySidebar(editInfo, user) {
                             const description = document.getElementById('company-description').value;
                             const filePath = company.file_path;
                             const id = company.id;
+                            if (companyProfileName == "" || invoiceInitials == "" || invoiceNumber == "" || companyProfileAddress == "" || companyProfileCity == "" || companyProfileStateInitials == "" || companyProfileZipCode == "") {
+                                e.preventDefault();
+                            }
                             const response = window.api.createFile({fullName, currentCompanyName, currentCompanyAddress, currentCompanyCity, currentCompanyStateInitials,
                                 currentCompanyZipCode, phoneNumber, email, companyProfileName, invoiceInitials, invoiceNumber, date, companyProfileAddress, companyProfileCity, 
                                 companyProfileStateInitials, companyProfileZipCode, quantity, unitPrice, description, filePath, id}).then(newFilePath => {
@@ -243,10 +250,13 @@ function updateCompanySidebar(editInfo, user) {
             const city = document.getElementById('company-city').value;
             const stateInitials = document.getElementById('state-initials').value;
             const zipCode = document.getElementById('company-zip-code').value;
-
-            const response = window.api.createCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode});
-            console.log('create res:', response);
-            location.reload();
+            if (name == "" || invoiceInitials == "" || invoiceNumber == "" || address == "" || city == "" || stateInitials == "" || zipCode == "") {
+                console.log('no save');
+            } else {
+                const response = window.api.createCompany({name, invoiceInitials, invoiceNumber, address, city, stateInitials, zipCode});
+                console.log('create res:', response);
+                location.reload();
+            }
         })
 
         // const submitButton = document.getElementById('create-company-submit');
@@ -346,13 +356,22 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
 
         document.getElementById('title').innerText = "Update Company Profile Data";
         // populates fields
+        document.getElementById('full-name').value = user.full_name;
+        setUpInput(document.getElementById('company-name'), null, "Please input full name.");
         document.getElementById('company-name').value = user.name;
+        setUpInput(document.getElementById('company-name'), null, "Please input company name.");
         document.getElementById('company-address').value = user.address;
+        setUpInput(document.getElementById('company-address'), null, "Please input company address.")
         document.getElementById('company-city').value = user.city;
+        setUpInput(document.getElementById('company-city'), null, "Please input company city.")
         document.getElementById('state-initials').value = user.state_initials;
+        setUpInput(document.getElementById('state-initials'), null, "Please input company state initials.")
         document.getElementById('company-zip-code').value = user.zip_code;
+        setUpInput(document.getElementById('company-zip-code'), null, "Please input company zip code.")
         document.getElementById('company-phone-number').value = user.phone_number;
+        setUpInput(document.getElementById('company-phone-number'), null, "Please input company phone number.")
         document.getElementById('company-email').value = user.email;
+        setUpInput(document.getElementById('company-email'), null, "Please input company email.")
 
         currentCompanyForm.addEventListener('submit', e => {
             e.preventDefault();
@@ -364,12 +383,24 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
             const zipCode = document.getElementById('company-zip-code').value;
             const phoneNumber = document.getElementById('company-phone-number').value;
             const email = document.getElementById('company-email').value;
-            const response = window.api.updateCurrentCompany({fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email});
-            console.log('res:', response);
-            window.location.href = 'index.html';
+            if (fullName == "" || companyName == "" || address == "" || city == "" || stateInitials == "" || zipCode == "" || phoneNumber == "" || email == "") {
+                console.log('no update company');
+            } else {
+                const response = window.api.updateCurrentCompany({fullName, companyName, address, city, stateInitials, zipCode, phoneNumber, email});
+                console.log('res:', response);
+                window.location.href = 'index.html';
+            }
         })
     }).catch(err => {
         document.getElementById('title').innerText = "Create Company Profile Data";
+        setUpInput(document.getElementById('company-name'), null, "Please input full name.");
+        setUpInput(document.getElementById('company-name'), null, "Please input company name.");
+        setUpInput(document.getElementById('company-address'), null, "Please input company address.")
+        setUpInput(document.getElementById('company-city'), null, "Please input company city.")
+        setUpInput(document.getElementById('state-initials'), null, "Please input company state initials.")
+        setUpInput(document.getElementById('company-zip-code'), null, "Please input company zip code.")
+        setUpInput(document.getElementById('company-phone-number'), null, "Please input company phone number.")
+        setUpInput(document.getElementById('company-email'), null, "Please input company email.")
         currentCompanyForm.addEventListener('submit', e => {
             e.preventDefault();
             const fullName = document.getElementById('full-name').value;
@@ -379,9 +410,14 @@ if (window.location.href.split('/').pop() != 'edit-profile.html') {
             const stateInitials = document.getElementById('state-initials').value
             const zipCode = document.getElementById('company-zip-code').value;
             const phoneNumber = document.getElementById('company-phone-number').value;
-            const response = window.api.createInitialCompany({fullName, companyName, address, city, zipCode, stateInitials, phoneNumber});
-            console.log('res:', response);
-            window.location.href = 'index.html';
+            const email = document.getElementById('company-email').value;
+            if (fullName == "" || companyName == "" || address == "" || city == "" || stateInitials == "" || zipCode == "" || phoneNumber == "" || email == "") {
+                console.log('no create company');
+            } else {
+                const response = window.api.createInitialCompany({fullName, companyName, address, city, zipCode, stateInitials, phoneNumber, email});
+                console.log('res:', response);
+                window.location.href = 'index.html';
+            }
         })
     });
 }
@@ -450,18 +486,17 @@ function initialsInput(fileButton = "") {
     });
 }
 
-function addWarningBeforeFileCreation() {
-    const companyForm = document.getElementById('edit-company-form');
-    const warning = document.createElement('p');
-    warning.innerText = "Save or refresh before file creation."
-    warning.classList.add('warning');
-    companyForm.appendChild(warning);
-}
+// function addWarningBeforeFileCreation() {
+//     const companyForm = document.getElementById('edit-company-form');
+//     const warning = document.createElement('p');
+//     warning.innerText = "Save or refresh before file creation."
+//     warning.classList.add('warning');
+//     companyForm.appendChild(warning);
+// }
 
-function removeWarningBeforeFileCreation() {
-    const companyForm = document.getElementById('edit-company-form');
-    const warning = document.querySelector('.warning');
-    console.log('warning', warning);
-    companyForm.removeChild(warning);
-    // company
-}
+// function removeWarningBeforeFileCreation() {
+//     const companyForm = document.getElementById('edit-company-form');
+//     const warning = document.querySelector('.warning');
+//     console.log('warning', warning);
+//     companyForm.removeChild(warning);
+// }
